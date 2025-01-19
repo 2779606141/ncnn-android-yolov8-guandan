@@ -1,0 +1,734 @@
+The target system is: Android - 1 - aarch64
+The host system is: Windows - 10.0.22631 - AMD64
+Determining if the C compiler works passed with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_e49cd"
+[1/2] Building C object CMakeFiles/cmTC_e49cd.dir/testCCompiler.c.o
+[2/2] Linking C executable cmTC_e49cd
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_eee8f"
+[1/2] Building C object CMakeFiles/cmTC_eee8f.dir/CMakeCCompilerABI.c.o
+[2/2] Linking C executable cmTC_eee8f
+Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)
+Target: aarch64-none-linux-android24
+Thread model: posix
+InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin
+Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8
+ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld" --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -EL --fix-cortex-a53-843419 -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m aarch64linux -pie -dynamic-linker /system/bin/linker64 -o cmTC_eee8f C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_eee8f.dir/CMakeCCompilerABI.c.o C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(CMAKE_LINKER-NOTFOUND|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_eee8f"]
+  ignore line: [[1/2] Building C object CMakeFiles/cmTC_eee8f.dir/CMakeCCompilerABI.c.o]
+  ignore line: [[2/2] Linking C executable cmTC_eee8f]
+  ignore line: [Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)]
+  ignore line: [Target: aarch64-none-linux-android24]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin]
+  ignore line: [Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8]
+  link line: [ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld" --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -EL --fix-cortex-a53-843419 -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m aarch64linux -pie -dynamic-linker /system/bin/linker64 -o cmTC_eee8f C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_eee8f.dir/CMakeCCompilerABI.c.o C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld] ==> ignore
+    arg [--sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot] ==> ignore
+    arg [-EL] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-zmax-page-size=16384] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [aarch64linux] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker64] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_eee8f] ==> ignore
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o] ==> ignore
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+    arg [--build-id=sha1] ==> ignore
+    arg [--no-rosegment] ==> ignore
+    arg [--no-undefined-version] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [CMakeFiles/cmTC_eee8f.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [-lc] ==> lib [c]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o] ==> ignore
+  remove lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  remove lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+  implicit libs: [-l:libunwind.a;dl;c;-l:libunwind.a;dl]
+  implicit dirs: [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+  implicit fwks: []
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_a5eda"
+[1/2] Building C object CMakeFiles/cmTC_a5eda.dir/feature_tests.c.o
+[2/2] Linking C executable cmTC_a5eda
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_a271a"
+[1/2] Building C object CMakeFiles/cmTC_a271a.dir/feature_tests.c.o
+[2/2] Linking C executable cmTC_a271a
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_5abb6"
+[1/2] Building C object CMakeFiles/cmTC_5abb6.dir/feature_tests.c.o
+[2/2] Linking C executable cmTC_5abb6
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros
+Determining if the CXX compiler works passed with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_49e99"
+[1/2] Building CXX object CMakeFiles/cmTC_49e99.dir/testCXXCompiler.cxx.o
+[2/2] Linking CXX executable cmTC_49e99
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_a4c40"
+[1/2] Building CXX object CMakeFiles/cmTC_a4c40.dir/CMakeCXXCompilerABI.cpp.o
+[2/2] Linking CXX executable cmTC_a4c40
+Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)
+Target: aarch64-none-linux-android24
+Thread model: posix
+InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin
+Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8
+ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld" --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -EL --fix-cortex-a53-843419 -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m aarch64linux -pie -dynamic-linker /system/bin/linker64 -o cmTC_a4c40 C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_a4c40.dir/CMakeCXXCompilerABI.cpp.o -Bstatic -lc++ -Bdynamic -lm C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(CMAKE_LINKER-NOTFOUND|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_a4c40"]
+  ignore line: [[1/2] Building CXX object CMakeFiles/cmTC_a4c40.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [[2/2] Linking CXX executable cmTC_a4c40]
+  ignore line: [Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)]
+  ignore line: [Target: aarch64-none-linux-android24]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin]
+  ignore line: [Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8]
+  link line: [ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld" --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -EL --fix-cortex-a53-843419 -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m aarch64linux -pie -dynamic-linker /system/bin/linker64 -o cmTC_a4c40 C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_a4c40.dir/CMakeCXXCompilerABI.cpp.o -Bstatic -lc++ -Bdynamic -lm C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld] ==> ignore
+    arg [--sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot] ==> ignore
+    arg [-EL] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-zmax-page-size=16384] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [aarch64linux] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker64] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_a4c40] ==> ignore
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o] ==> ignore
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+    arg [--build-id=sha1] ==> ignore
+    arg [--no-rosegment] ==> ignore
+    arg [--no-undefined-version] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [CMakeFiles/cmTC_a4c40.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-Bstatic] ==> ignore
+    arg [-lc++] ==> lib [c++]
+    arg [-Bdynamic] ==> ignore
+    arg [-lm] ==> lib [m]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [-lc] ==> lib [c]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o] ==> ignore
+  remove lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  remove lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+  implicit libs: [c++;m;-l:libunwind.a;dl;c;-l:libunwind.a;dl]
+  implicit dirs: [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+  implicit fwks: []
+
+
+
+
+Detecting CXX [-std=c++1z] compiler features compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_5ebb3"
+[1/2] Building CXX object CMakeFiles/cmTC_5ebb3.dir/feature_tests.cxx.o
+[2/2] Linking CXX executable cmTC_5ebb3
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++14] compiler features compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_41bd2"
+[1/2] Building CXX object CMakeFiles/cmTC_41bd2.dir/feature_tests.cxx.o
+[2/2] Linking CXX executable cmTC_41bd2
+
+
+    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++11] compiler features compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_95b6b"
+[1/2] Building CXX object CMakeFiles/cmTC_95b6b.dir/feature_tests.cxx.o
+[2/2] Linking CXX executable cmTC_95b6b
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++98] compiler features compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_16004"
+[1/2] Building CXX object CMakeFiles/cmTC_16004.dir/feature_tests.cxx.o
+[2/2] Linking CXX executable cmTC_16004
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:0cxx_alias_templates
+    Feature record: CXX_FEATURE:0cxx_alignas
+    Feature record: CXX_FEATURE:0cxx_alignof
+    Feature record: CXX_FEATURE:0cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:0cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:0cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:0cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:0cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:0cxx_default_function_template_args
+    Feature record: CXX_FEATURE:0cxx_defaulted_functions
+    Feature record: CXX_FEATURE:0cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:0cxx_delegating_constructors
+    Feature record: CXX_FEATURE:0cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:0cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:0cxx_explicit_conversions
+    Feature record: CXX_FEATURE:0cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:0cxx_extern_templates
+    Feature record: CXX_FEATURE:0cxx_final
+    Feature record: CXX_FEATURE:0cxx_func_identifier
+    Feature record: CXX_FEATURE:0cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:0cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:0cxx_inline_namespaces
+    Feature record: CXX_FEATURE:0cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:0cxx_local_type_template_args
+    Feature record: CXX_FEATURE:0cxx_long_long_type
+    Feature record: CXX_FEATURE:0cxx_noexcept
+    Feature record: CXX_FEATURE:0cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:0cxx_nullptr
+    Feature record: CXX_FEATURE:0cxx_override
+    Feature record: CXX_FEATURE:0cxx_range_for
+    Feature record: CXX_FEATURE:0cxx_raw_string_literals
+    Feature record: CXX_FEATURE:0cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:0cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:0cxx_rvalue_references
+    Feature record: CXX_FEATURE:0cxx_sizeof_member
+    Feature record: CXX_FEATURE:0cxx_static_assert
+    Feature record: CXX_FEATURE:0cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:0cxx_thread_local
+    Feature record: CXX_FEATURE:0cxx_trailing_return_types
+    Feature record: CXX_FEATURE:0cxx_unicode_literals
+    Feature record: CXX_FEATURE:0cxx_uniform_initialization
+    Feature record: CXX_FEATURE:0cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:0cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:0cxx_variadic_macros
+    Feature record: CXX_FEATURE:0cxx_variadic_templates
+Detecting C OpenMP compiler ABI info compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_9ee69"
+[1/2] Building C object CMakeFiles/cmTC_9ee69.dir/OpenMPTryFlag.c.o
+Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)
+Target: aarch64-none-linux-android24
+Thread model: posix
+InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin
+Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8
+ (in-process)
+ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe" -cc1 -triple aarch64-none-linux-android24 -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name OpenMPTryFlag.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu generic -target-feature +v8a -target-feature +fp-armv8 -target-feature +neon -target-feature +fix-cortex-a53-835769 -target-abi aapcs -debug-info-kind=constructor -dwarf-version=4 -debugger-tuning=gdb "-fdebug-compilation-dir=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp" -v -ffunction-sections -fdata-sections "-fcoverage-compilation-dir=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp" -resource-dir C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19 -D ANDROID -D _FORTIFY_SOURCE=2 -isysroot C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/include -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/local/include -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/include -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include -Wformat -Werror=format-security -ferror-limit 19 -femulated-tls -fopenmp -stack-protector 2 -fno-signed-char -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -target-feature +outline-atomics -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_9ee69.dir/OpenMPTryFlag.c.o -x c "E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/FindOpenMP/OpenMPTryFlag.c"
+clang -cc1 version 19.0.0 based upon LLVM 19.0.0 default target x86_64-w64-windows-gnu
+ignoring nonexistent directory "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/local/include"
+ignoring nonexistent directory "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/include
+ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android
+ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include
+End of search list.
+[2/2] Linking C executable cmTC_9ee69
+Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)
+Target: aarch64-none-linux-android24
+Thread model: posix
+InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin
+Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8
+ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld" --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -EL --fix-cortex-a53-843419 -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m aarch64linux -pie -dynamic-linker /system/bin/linker64 -o cmTC_9ee69 C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_9ee69.dir/OpenMPTryFlag.c.o -latomic -lm -lomp -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o
+
+
+Parsed C OpenMP implicit link information from above output:
+  link line regex: [^( *|.*[/\])(CMAKE_LINKER-NOTFOUND|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_9ee69"]
+  ignore line: [[1/2] Building C object CMakeFiles/cmTC_9ee69.dir/OpenMPTryFlag.c.o]
+  ignore line: [Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)]
+  ignore line: [Target: aarch64-none-linux-android24]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin]
+  ignore line: [Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8]
+  ignore line: [ (in-process)]
+  ignore line: [ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe" -cc1 -triple aarch64-none-linux-android24 -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name OpenMPTryFlag.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu generic -target-feature +v8a -target-feature +fp-armv8 -target-feature +neon -target-feature +fix-cortex-a53-835769 -target-abi aapcs -debug-info-kind=constructor -dwarf-version=4 -debugger-tuning=gdb "-fdebug-compilation-dir=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp" -v -ffunction-sections -fdata-sections "-fcoverage-compilation-dir=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp" -resource-dir C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19 -D ANDROID -D _FORTIFY_SOURCE=2 -isysroot C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/include -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/local/include -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/include -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include -Wformat -Werror=format-security -ferror-limit 19 -femulated-tls -fopenmp -stack-protector 2 -fno-signed-char -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -target-feature +outline-atomics -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_9ee69.dir/OpenMPTryFlag.c.o -x c "E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/FindOpenMP/OpenMPTryFlag.c"]
+  ignore line: [clang -cc1 version 19.0.0 based upon LLVM 19.0.0 default target x86_64-w64-windows-gnu]
+  ignore line: [ignoring nonexistent directory "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/local/include"]
+  ignore line: [ignoring nonexistent directory "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/include]
+  ignore line: [ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android]
+  ignore line: [ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking C executable cmTC_9ee69]
+  ignore line: [Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)]
+  ignore line: [Target: aarch64-none-linux-android24]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin]
+  ignore line: [Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8]
+  link line: [ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld" --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -EL --fix-cortex-a53-843419 -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m aarch64linux -pie -dynamic-linker /system/bin/linker64 -o cmTC_9ee69 C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_9ee69.dir/OpenMPTryFlag.c.o -latomic -lm -lomp -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld] ==> ignore
+    arg [--sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot] ==> ignore
+    arg [-EL] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-zmax-page-size=16384] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [aarch64linux] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker64] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_9ee69] ==> ignore
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o] ==> ignore
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+    arg [--build-id=sha1] ==> ignore
+    arg [--no-rosegment] ==> ignore
+    arg [--no-undefined-version] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [CMakeFiles/cmTC_9ee69.dir/OpenMPTryFlag.c.o] ==> ignore
+    arg [-latomic] ==> lib [atomic]
+    arg [-lm] ==> lib [m]
+    arg [-lomp] ==> lib [omp]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [-lc] ==> lib [c]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o] ==> ignore
+  remove lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  remove lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib]
+  implicit libs: [atomic;m;omp;-l:libunwind.a;dl;c;-l:libunwind.a;dl]
+  implicit dirs: [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib]
+  implicit fwks: []
+
+
+Detecting CXX OpenMP compiler ABI info compiled with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_02b33"
+[1/2] Building CXX object CMakeFiles/cmTC_02b33.dir/OpenMPTryFlag.cpp.o
+Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)
+Target: aarch64-none-linux-android24
+Thread model: posix
+InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin
+Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8
+ (in-process)
+ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe" -cc1 -triple aarch64-none-linux-android24 -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name OpenMPTryFlag.cpp -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu generic -target-feature +v8a -target-feature +fp-armv8 -target-feature +neon -target-feature +fix-cortex-a53-835769 -target-abi aapcs -debug-info-kind=constructor -dwarf-version=4 -debugger-tuning=gdb "-fdebug-compilation-dir=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp" -v -ffunction-sections -fdata-sections "-fcoverage-compilation-dir=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp" -resource-dir C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19 -D ANDROID -D _FORTIFY_SOURCE=2 -isysroot C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1 -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/include -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/local/include -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/include -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include -Wformat -Werror=format-security -fdeprecated-macro -ferror-limit 19 -femulated-tls -fopenmp -stack-protector 2 -fno-signed-char -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -target-feature +outline-atomics -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_02b33.dir/OpenMPTryFlag.cpp.o -x c++ "E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp"
+clang -cc1 version 19.0.0 based upon LLVM 19.0.0 default target x86_64-w64-windows-gnu
+ignoring nonexistent directory "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/local/include"
+ignoring nonexistent directory "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1
+ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/include
+ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android
+ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include
+End of search list.
+[2/2] Linking CXX executable cmTC_02b33
+Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)
+Target: aarch64-none-linux-android24
+Thread model: posix
+InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin
+Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8
+ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld" --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -EL --fix-cortex-a53-843419 -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m aarch64linux -pie -dynamic-linker /system/bin/linker64 -o cmTC_02b33 C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_02b33.dir/OpenMPTryFlag.cpp.o -latomic -lm -Bstatic -lc++ -Bdynamic -lm -lomp -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o
+
+
+Parsed CXX OpenMP implicit link information from above output:
+  link line regex: [^( *|.*[/\])(CMAKE_LINKER-NOTFOUND|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_02b33"]
+  ignore line: [[1/2] Building CXX object CMakeFiles/cmTC_02b33.dir/OpenMPTryFlag.cpp.o]
+  ignore line: [Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)]
+  ignore line: [Target: aarch64-none-linux-android24]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin]
+  ignore line: [Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8]
+  ignore line: [ (in-process)]
+  ignore line: [ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe" -cc1 -triple aarch64-none-linux-android24 -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name OpenMPTryFlag.cpp -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu generic -target-feature +v8a -target-feature +fp-armv8 -target-feature +neon -target-feature +fix-cortex-a53-835769 -target-abi aapcs -debug-info-kind=constructor -dwarf-version=4 -debugger-tuning=gdb "-fdebug-compilation-dir=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp" -v -ffunction-sections -fdata-sections "-fcoverage-compilation-dir=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp" -resource-dir C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19 -D ANDROID -D _FORTIFY_SOURCE=2 -isysroot C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1 -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/include -internal-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/local/include -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/include -internal-externc-isystem C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include -Wformat -Werror=format-security -fdeprecated-macro -ferror-limit 19 -femulated-tls -fopenmp -stack-protector 2 -fno-signed-char -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -target-feature +outline-atomics -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_02b33.dir/OpenMPTryFlag.cpp.o -x c++ "E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp"]
+  ignore line: [clang -cc1 version 19.0.0 based upon LLVM 19.0.0 default target x86_64-w64-windows-gnu]
+  ignore line: [ignoring nonexistent directory "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/local/include"]
+  ignore line: [ignoring nonexistent directory "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1]
+  ignore line: [ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/include]
+  ignore line: [ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/aarch64-linux-android]
+  ignore line: [ C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking CXX executable cmTC_02b33]
+  ignore line: [Android (12328485, based on r530567) clang version 19.0.0 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)]
+  ignore line: [Target: aarch64-none-linux-android24]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin]
+  ignore line: [Found CUDA installation: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8, version 11.8]
+  link line: [ "C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld" --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -EL --fix-cortex-a53-843419 -z now -z relro -z max-page-size=16384 --hash-style=gnu --eh-frame-hdr -m aarch64linux -pie -dynamic-linker /system/bin/linker64 -o cmTC_02b33 C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24 -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --no-undefined-version --fatal-warnings --no-undefined CMakeFiles/cmTC_02b33.dir/OpenMPTryFlag.cpp.o -latomic -lm -Bstatic -lc++ -Bdynamic -lm -lomp -LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/ld.lld] ==> ignore
+    arg [--sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot] ==> ignore
+    arg [-EL] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-zmax-page-size=16384] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [aarch64linux] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker64] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_02b33] ==> ignore
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtbegin_dynamic.o] ==> ignore
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+    arg [--build-id=sha1] ==> ignore
+    arg [--no-rosegment] ==> ignore
+    arg [--no-undefined-version] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [CMakeFiles/cmTC_02b33.dir/OpenMPTryFlag.cpp.o] ==> ignore
+    arg [-latomic] ==> lib [atomic]
+    arg [-lm] ==> lib [m]
+    arg [-Bstatic] ==> ignore
+    arg [-lc++] ==> lib [c++]
+    arg [-Bdynamic] ==> ignore
+    arg [-lm] ==> lib [m]
+    arg [-lomp] ==> lib [omp]
+    arg [-LC:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib] ==> dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [-lc] ==> lib [c]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24/crtend_android.o] ==> ignore
+  remove lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  remove lib [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib]
+  collapse library dir [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib] ==> [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib]
+  implicit libs: [atomic;m;c++;m;omp;-l:libunwind.a;dl;c;-l:libunwind.a;dl]
+  implicit dirs: [C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/aarch64;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android/24;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib/aarch64-linux-android;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/lib;C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib]
+  implicit fwks: []
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_73802"
+[1/2] Building C object CMakeFiles/cmTC_73802.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_73802
+
+
+Determining if the pthread_create exist passed with the following output:
+Change Dir: E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:\Users\yyx\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe" "cmTC_3f01b"
+[1/2] Building C object CMakeFiles/cmTC_3f01b.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_3f01b
+
+File E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/Debug/5m3n6u50/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+

@@ -1,0 +1,30 @@
+# ninja log v5
+7	2285	758739624	CMakeFiles/yolov8ncnn.dir/ndkcamera.cpp.o	b87bf1882686352a
+12	2568	758739624	CMakeFiles/yolov8ncnn.dir/yolov8ncnn.cpp.o	4327e886332f8326
+0	2708	758739624	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+2708	3105	758739625	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+15	1520	758787358	CMakeFiles/yolov8ncnn.dir/yolov8ncnn.cpp.o	4327e886332f8326
+1520	1844	758787358	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+12	1951	758803555	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+1951	2382	758803555	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+9	1684	758803830	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+1685	1960	758803831	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+12	1889	758819460	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+1890	2250	758819460	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+9	1540	758824917	CMakeFiles/yolov8ncnn.dir/yolov8ncnn.cpp.o	4327e886332f8326
+1540	1784	758824917	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+9	1539	758828462	CMakeFiles/yolov8ncnn.dir/yolov8ncnn.cpp.o	4327e886332f8326
+1539	1766	758828463	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+8	1628	758828679	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+1628	1851	758828680	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+30	1678	758872503	CMakeFiles/yolov8ncnn.dir/yolov8ncnn.cpp.o	4327e886332f8326
+14	1809	758872503	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+1809	2212	758872504	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+10	1648	758872886	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+1648	1873	758872886	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+11	1640	758873328	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+1640	1864	758873329	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+10	1647	758874178	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+1648	1876	758874178	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
+12	2249	758908595	CMakeFiles/yolov8ncnn.dir/yolo.cpp.o	b4efb2e5dcf560c4
+2250	2632	758908595	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/arm64-v8a/libyolov8ncnn.so	541b70c3afbb27f3
