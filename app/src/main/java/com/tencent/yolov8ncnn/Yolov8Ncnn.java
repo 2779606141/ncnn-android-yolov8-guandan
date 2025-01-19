@@ -26,7 +26,7 @@ public class Yolov8Ncnn
     public native boolean openCamera(int facing);
     public native boolean closeCamera();
     public native boolean setOutputWindow(Surface surface);
-    public native boolean recognizeImage(Bitmap bitmap, int[] list);
+    public native boolean recognizeImage(Bitmap bitmap, int[] list,int inputsize);
 
     static {
         System.loadLibrary("yolov8ncnn");

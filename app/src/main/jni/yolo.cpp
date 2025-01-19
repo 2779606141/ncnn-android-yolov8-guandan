@@ -263,25 +263,25 @@ int Yolo::load(AAssetManager* mgr, const char* modeltype, int _target_size, cons
     return 0;
 }
 
-int Yolo::detect(const cv::Mat& rgb, std::vector<Object>& objects, float prob_threshold, float nms_threshold)
+int Yolo::detect(const cv::Mat& rgb, std::vector<Object>& objects, float prob_threshold, float nms_threshold, int input_size)
 {
     int width = rgb.cols;
     int height = rgb.rows;
-    prob_threshold=0.5;
+
     // pad to multiple of 32
     int w = width;
     int h = height;
     float scale = 1.f;
     if (w > h)
     {
-        scale = (float)target_size / w;
-        w = target_size;
+        scale = (float)input_size / w;
+        w = input_size;
         h = h * scale;
     }
     else
     {
-        scale = (float)target_size / h;
-        h = target_size;
+        scale = (float)input_size / h;
+        h = input_size;
         w = w * scale;
     }
 
@@ -296,11 +296,9 @@ int Yolo::detect(const cv::Mat& rgb, std::vector<Object>& objects, float prob_th
     in_pad.substract_mean_normalize(0, norm_vals);
 
     ncnn::Extractor ex = yolo.create_extractor();
-
     ex.input("in0", in_pad);
 
     std::vector<Object> proposals;
-    
     ncnn::Mat out;
     ex.extract("out0", out);
 
@@ -317,8 +315,6 @@ int Yolo::detect(const cv::Mat& rgb, std::vector<Object>& objects, float prob_th
     nms_sorted_bboxes(proposals, picked, nms_threshold);
 
     int count = picked.size();
-//    __android_log_print(ANDROID_LOG_DEBUG, "YOLOV8NCNN", "Detected %d objects", count);
-
     objects.resize(count);
     for (int i = 0; i < count; i++)
     {

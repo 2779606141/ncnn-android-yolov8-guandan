@@ -49,12 +49,20 @@ public class FloatingWindowService extends Service {
     private Context context;
     private int[] cardCounts, player0Card,player1Card, player2Card,player3Card;
     private int[] handCard = {100, 500, 3000, 1200};
-    private int[] player1 = {2300, 340, 2800, 530};//左x，左y，右x，右y 左上角为0，0
+    private int[] player1 = {2100, 320, 2750, 520};//左x，左y，右x，右y 左上角为0，0
     private int[] player3 = {310, 320, 800, 520};
-    private int[] player2 = {1200, 200, 2000, 360};
+    private int[] player2 = {1200, 200, 2000, 350};
     private int[] player4 = {260, 340, 800, 554};
     private float ratio; // 适配不同屏幕大小，需要缩放或扩大的比例
     private Yolov8Ncnn yolov8ncnn; // YOLOv8模型实例
+    private int[][] player1Hist = new int[2][16];
+    private int[][] player2Hist = new int[2][16];
+    private int[][] player3Hist = new int[2][16];
+
+    // 状态变量
+    private int player1State = 0;
+    private int player2State = 0;
+    private int player3State = 0;
 
     private int time;
 
@@ -331,6 +339,12 @@ public class FloatingWindowService extends Service {
         Arrays.fill(cardCounts, 8);
         cardCounts[14] = 2;
         cardCounts[15] = 2;
+        this.player1Hist=new int[2][16];
+        this.player2Hist=new int[2][16];
+        this.player3Hist=new int[2][16];
+        this.player1State=0;
+        this.player2State=0;
+        this.player3State=0;
 
         // 更新玩家手牌信息
         updatePlayerCard();
@@ -348,7 +362,7 @@ public class FloatingWindowService extends Service {
                 bitmap = ImageUtils.cropBitmap(bitmap, handCard);
                 int[] list= new int[100];
                 Arrays.fill(list,60);
-                boolean success = yolov8ncnn.recognizeImage(bitmap, list); // 对玩家1的图片进行识别
+                boolean success = yolov8ncnn.recognizeImage(bitmap, list,1280); // 对玩家1的图片进行识别
 
                 saveBitmap(bitmap);
 
@@ -400,40 +414,62 @@ public class FloatingWindowService extends Service {
                     Arrays.fill(list2,60);
                     Arrays.fill(list3,60);
                     // 使用YOLO模型进行识别
-                    boolean success1 = yolov8ncnn.recognizeImage(bitmap1, list1); // 对玩家1的图片进行识别
-                    boolean success2 = yolov8ncnn.recognizeImage(bitmap2, list2); // 对玩家2的图片进行识别
-                    boolean success3 = yolov8ncnn.recognizeImage(bitmap3, list3); // 对玩家2的图片进行识别
-                    // 将YOLO识别的结果转换为playerCard格式
-                    int[] playerCard1 = convertYoloListToPlayerCard(list1);
-                    int[] playerCard2 = convertYoloListToPlayerCard(list2);
-                    int[] playerCard3 = convertYoloListToPlayerCard(list3);
+                    boolean success1 = yolov8ncnn.recognizeImage(bitmap1, list1,640); // 对玩家1的图片进行识别
+                    boolean success2 = yolov8ncnn.recognizeImage(bitmap2, list2,640); // 对玩家2的图片进行识别
+                    boolean success3 = yolov8ncnn.recognizeImage(bitmap3, list3,640); // 对玩家2的图片进行识别
 
-                    // 根据识别结果更新玩家手牌
-                    if (success1 && isChange(player1Card, playerCard1)){
-                        Log.d("GameLog", "player1出牌");
-                        player1Card = playerCard1;
-                        logPlayerCard(player1Card);
-                        updateContent(player1Card);
-                        if(!isEmpty(playerCard1)){
+                    if (success1) {
+                        // 更新历史记录
+                        System.arraycopy(player1Hist, 0, player1Hist, 1, player1Hist.length - 1);
+                        player1Hist[0]=convertYoloListToPlayerCard(list1);
+                        if (player1State == 0 && isChangeWithHistory(player1Hist)&&!isEmpty(player1Hist[0])) {
+                            // 当首次检测到出牌且连续三次结果一致时确认出牌
+                            player1State = 1;
+                            Log.d("GameLog", "player1出牌");
+                            player1Card = player1Hist[0];
+                            showPlayerCardToast(player1Card, "Player 1");
+                            logPlayerCard(player1Card);
+                            updateContent(player1Card);
                             saveBitmap(bitmap1);
+                        } else if (player1State == 1 && (allZeroInHistory(player1Hist)||player2State==0&&player3State==0&&isEmpty(player1Hist[0]))) {
+                            // 如果连续三次未识别到目标则重置状态
+                            player1State = 0;
                         }
                     }
-                    if (success2 && isChange(player2Card, playerCard2)){
-                        Log.d("GameLog", "player2出牌");
-                        player2Card = playerCard2;
-                        logPlayerCard(player2Card);
-                        updateContent(player2Card);
-                        if(!isEmpty(playerCard2)){
+                    if (success2) {
+                        // 更新历史记录
+                        System.arraycopy(player2Hist, 0, player2Hist, 1, player2Hist.length - 1);
+                        player2Hist[0]=convertYoloListToPlayerCard(list2);
+                        if (player2State == 0 && isChangeWithHistory(player2Hist)&&!isEmpty(player2Hist[0])) {
+                            // 当首次检测到出牌且连续三次结果一致时确认出牌
+                            player2State = 1;
+                            Log.d("GameLog", "player2出牌");
+                            player2Card = player2Hist[0];
+                            showPlayerCardToast(player2Card, "Player 2");
+                            logPlayerCard(player2Card);
+                            updateContent(player2Card);
                             saveBitmap(bitmap2);
+                        } else if (player2State == 1 && (allZeroInHistory(player2Hist)||player1State==0&&player3State==0&&isEmpty(player2Hist[0]))) {
+                            // 如果连续三次未识别到目标则重置状态
+                            player2State = 0;
                         }
                     }
-                    if (success3 && isChange(player3Card, playerCard3)){
-                        Log.d("GameLog", "player3出牌");
-                        player3Card = playerCard3;
-                        logPlayerCard(player3Card);
-                        updateContent(player3Card);
-                        if(!isEmpty(playerCard3)){
+                    if (success3) {
+                        // 更新历史记录
+                        System.arraycopy(player3Hist, 0, player3Hist, 1, player3Hist.length - 1);
+                        player3Hist[0]=convertYoloListToPlayerCard(list3);
+                        if (player3State == 0 && isChangeWithHistory(player3Hist)&&!isEmpty(player3Hist[0])) {
+                            // 当首次检测到出牌且连续三次结果一致时确认出牌
+                            player3State = 1;
+                            Log.d("GameLog", "player3出牌");
+                            player3Card = player3Hist[0];
+                            showPlayerCardToast(player3Card, "Player 3");
+                            logPlayerCard(player3Card);
+                            updateContent(player3Card);
                             saveBitmap(bitmap3);
+                        } else if (player3State == 1 && (allZeroInHistory(player3Hist)||player2State==0&&player1State==0&&isEmpty(player3Hist[0]))) {
+                            // 如果连续三次未识别到目标则重置状态
+                            player3State = 0;
                         }
                     }
                     // 更新玩家手牌信息
@@ -450,9 +486,9 @@ public class FloatingWindowService extends Service {
             if (playerCard[i] != 0) {
                 for (int j = 0; j < playerCard[i]; j++) {
                     if (i == 14) {
-                        sb.append("小王");
-                    } else if (i == 15) {
                         sb.append("大王");
+                    } else if (i == 15) {
+                        sb.append("小王");
                     } else {
                         sb.append(i);
                     }
@@ -467,6 +503,19 @@ public class FloatingWindowService extends Service {
             if (playerCard[i] != 0) {
                 return false;
             }
+        }
+        return true;
+    }
+    private boolean isChangeWithHistory(int[][] hist) {
+        for (int i = 1; i < hist.length; i++) {
+            if (!Arrays.equals(hist[i], hist[0])) return false;
+        }
+        return true;
+    }
+
+    private boolean allZeroInHistory(int[][] hist) {
+        for (int[] record : hist) {
+            if (!isEmpty(record)) return false;
         }
         return true;
     }
@@ -495,12 +544,25 @@ public class FloatingWindowService extends Service {
             MediaScannerConnection.scanFile(this, new String[]{outputFile.getAbsolutePath()}, null, null);
 
             // 提示用户图片已保存
-            Toast.makeText(this, "Image saved: " + outputFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Image saved: " + outputFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
 
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("BitmapSave", "Error saving bitmap: " + e.getMessage());
         }
+    }
+
+    private void showPlayerCardToast(int[] playerCard, String playerName) {
+        StringBuilder sb = new StringBuilder(playerName).append(" 出牌: ");
+        for (int i = 1; i < playerCard.length; i++) {
+            if (playerCard[i] != 0) {
+                for (int j = 0; j < playerCard[i]; j++) {
+                    sb.append(name[i]).append(" ");
+                }
+            }
+        }
+        // 显示Toast消息
+        Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
     }
 
     // 将YOLO识别结果转换为playerCard格式
@@ -522,7 +584,7 @@ public class FloatingWindowService extends Service {
         return playerCard;
     }
     // 定义牌面名称数组，包括特殊牌（小王、大王）
-    String[] name = { " ","A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "小王", "大王"};
+    String[] name = { " ","A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "大王", "小王"};
 
     /**
      * 更新显示内容。

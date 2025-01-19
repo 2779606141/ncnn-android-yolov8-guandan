@@ -268,7 +268,7 @@ JNIEXPORT jboolean JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_setOutputWindo
     return JNI_TRUE;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_recognizeImage(JNIEnv* env, jobject thiz, jobject bitmap,jintArray list) {
+JNIEXPORT jboolean JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_recognizeImage(JNIEnv* env, jobject thiz, jobject bitmap,jintArray list,jint input_size) {
     AndroidBitmapInfo info;
     void* pixels;
     int ret;
@@ -294,7 +294,7 @@ JNIEXPORT jboolean JNICALL Java_com_tencent_yolov8ncnn_Yolov8Ncnn_recognizeImage
     {
         ncnn::MutexLockGuard g(lock);
         if (g_yolo)
-            g_yolo->detect(imgBGR, objects);
+            g_yolo->detect(imgBGR, objects, 0.8, 0.5, input_size);
     }
 
     // 使用 Yolo::draw 方法绘制检测结果
