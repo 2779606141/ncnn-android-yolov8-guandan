@@ -374,6 +374,7 @@ public class FloatingWindowService extends Service {
                 bitmap = ImageUtils.cropBitmap(bitmap, handCard);
                 int[] list = new int[100];
                 Arrays.fill(list, 60);
+                //识别手牌
                 boolean success = yolov8ncnn.recognizeImage(bitmap, list, 1520); // 对玩家1的图片进行识别
                 saveBitmap(bitmap);
                 // 将YOLO识别的结果转换为playerCard格式
@@ -426,40 +427,32 @@ public class FloatingWindowService extends Service {
                     Arrays.fill(list3, 60);
                     Arrays.fill(list0, 60);
                     // 使用YOLO模型进行识别
-                    long startTime = System.currentTimeMillis();
+
                     boolean success1 = yolov8ncnn.recognizeImage(bitmap1, list1, 640); // 对玩家1的图片进行识别
                     boolean success2 = yolov8ncnn.recognizeImage(bitmap2, list2, 640); // 对玩家2的图片进行识别
                     boolean success3 = yolov8ncnn.recognizeImage(bitmap3, list3, 640); // 对玩家2的图片进行识别
                     boolean success0 = yolov8ncnn.recognizeImage(bitmap0, list0, 640); // 对玩家2的图片进行识别
+                    long startTime = System.currentTimeMillis();
                     // 销毁 Bitmap 对象
-                    if (!bitmap.isRecycled()) {
-                        bitmap.recycle();
-                    }
-                    if (!bitmap1.isRecycled()) {
-                        bitmap1.recycle();
-                    }
-                    if (!bitmap2.isRecycled()) {
-                        bitmap2.recycle();
-                    }
-                    if (!bitmap3.isRecycled()) {
-                        bitmap3.recycle();
-                    }
-                    if (!bitmap0.isRecycled()) {
-                        bitmap0.recycle();
-                    }
+                    bitmap.recycle();
+                    bitmap1.recycle();
+                    bitmap2.recycle();
+                    bitmap3.recycle();
+                    bitmap0.recycle();
+
                     long endTime = System.currentTimeMillis();
                     long totalTime = endTime - startTime;
-                    Log.d("Performance", "四张图片推理时间: " + totalTime + " ms");
+//                    Log.d("Performance", "四张图片推理时间: " + totalTime + " ms");
 
-//                    saveBitmap(bitmap3);
+//                    saveBitmap(bitmap0);
                     if (success1) {
                         // 更新历史记录
                         System.arraycopy(player1Hist, 0, player1Hist, 1, player1Hist.length - 1);
                         player1Hist[0] = convertYoloListToPlayerCard(list1);
-                        if (System.currentTimeMillis() - player1Time > 2000
-                                && (isNotChangeWithHistory(player1Hist) || isNewCardDetected(player1Hist))
-                                && (player1State == 0 || !Arrays.equals(player1Hist[0], player1Last))
-                                && !isEmpty(player1Hist[0])) {
+                        if (!isEmpty(player1Hist[0])
+                                && (!Arrays.equals(player1Hist[0], player1Last) || player1State == 0)
+                                && (isNotChangeWithHistory(player1Hist) || !Arrays.equals(player1Hist[0], player1Last)&&isNewCardDetected(player1Hist))
+                                && System.currentTimeMillis() - player1Time > 2000) {
                             // 当首次检测到出牌且连续三次结果一致时确认出牌
                             player1State = 1;
                             player1Time = System.currentTimeMillis();
@@ -477,10 +470,10 @@ public class FloatingWindowService extends Service {
                         // 更新历史记录
                         System.arraycopy(player2Hist, 0, player2Hist, 1, player2Hist.length - 1);
                         player2Hist[0] = convertYoloListToPlayerCard(list2);
-                        if (System.currentTimeMillis() - player2Time > 2000
-                                && (isNotChangeWithHistory(player2Hist) || isNewCardDetected(player2Hist))
-                                && (player2State == 0 || !Arrays.equals(player2Hist[0], player2Last))
-                                && !isEmpty(player2Hist[0])) {
+                        if (!isEmpty(player2Hist[0])
+                                && (!Arrays.equals(player2Hist[0], player2Last) || player2State == 0)
+                                && (isNotChangeWithHistory(player2Hist) || !Arrays.equals(player2Hist[0], player2Last)&&isNewCardDetected(player2Hist))
+                                && System.currentTimeMillis() - player2Time > 2000) {
                             // 当首次检测到出牌且连续三次结果一致时确认出牌
                             player2State = 1;
                             player2Time = System.currentTimeMillis();
@@ -498,10 +491,10 @@ public class FloatingWindowService extends Service {
                         // 更新历史记录
                         System.arraycopy(player3Hist, 0, player3Hist, 1, player3Hist.length - 1);
                         player3Hist[0] = convertYoloListToPlayerCard(list3);
-                        if (System.currentTimeMillis() - player3Time > 2000
-                                && (isNotChangeWithHistory(player3Hist) || isNewCardDetected(player3Hist))
-                                && (player3State == 0 || !Arrays.equals(player3Hist[0], player3Last))
-                                && !isEmpty(player3Hist[0])) {
+                        if (!isEmpty(player3Hist[0])
+                                && (!Arrays.equals(player3Hist[0], player3Last) || player3State == 0)
+                                && (isNotChangeWithHistory(player3Hist) || !Arrays.equals(player3Hist[0], player3Last)&&isNewCardDetected(player3Hist))
+                                && System.currentTimeMillis() - player3Time > 2000) {
                             // 当首次检测到出牌且连续三次结果一致时确认出牌
                             player3State = 1;
                             player3Time = System.currentTimeMillis();
@@ -519,10 +512,10 @@ public class FloatingWindowService extends Service {
                         // 更新历史记录
                         System.arraycopy(player0Hist, 0, player0Hist, 1, player0Hist.length - 1);
                         player0Hist[0] = convertYoloListToPlayerCard(list0);
-                        if (System.currentTimeMillis() - player0Time > 2000
-                                && (isNotChangeWithHistory(player0Hist) || isNewCardDetected(player0Hist))
-                                && (player0State == 0 || !Arrays.equals(player0Hist[0], player0Last))
-                                && !isEmpty(player0Hist[0])) {
+                        if (!isEmpty(player0Hist[0])
+                                && (!Arrays.equals(player0Hist[0], player0Last) ||player0State == 0 )
+                                && (isNotChangeWithHistory(player0Hist) || !Arrays.equals(player0Hist[0], player0Last)&&isNewCardDetected(player0Hist))
+                                && System.currentTimeMillis() - player0Time > 2000) {
                             // 当首次检测到出牌且连续三次结果一致时确认出牌
                             player0State = 1;
                             player0Time = System.currentTimeMillis();
@@ -547,21 +540,50 @@ public class FloatingWindowService extends Service {
 
     public boolean isNewCardDetected(int[][] playerHist) {
         int oldest = playerHist.length - 1;
-        // 遍历所有历史记录（除了最老的记录）
-        for (int i = 0; i <= oldest; i++) {
-            if (isEmpty(playerHist[i])) {
+        if(isEmpty(playerHist[oldest])){
+            return false;
+        }
+        if(isSingleCard(playerHist[oldest])){
+            if(!Arrays.equals(playerHist[oldest], playerHist[oldest - 1])){
                 return false;
             }
-            // 比较当前历史记录和最老记录的每一位
-            for (int j = 0; j < playerHist[i].length; j++) {
-                if (playerHist[oldest][j] < playerHist[i][j]) {
+            for (int i = 0; i < oldest-1; i++) {
+                // 比较当前历史记录和最老记录的每一位
+                for (int j = 0; j < playerHist[i].length; j++) {
+                    if (playerHist[oldest][j] < playerHist[i][j]) {
+                        return false;
+                    }
+                }
+            }
+        }
+        else{
+            // 遍历所有历史记录（除了最老的记录）
+            for (int i = 0; i < oldest; i++) {
+                if (isEmpty(playerHist[i])) {
                     return false;
+                }
+                // 比较当前历史记录和最老记录的每一位
+                for (int j = 0; j < playerHist[i].length; j++) {
+                    if (playerHist[oldest][j] < playerHist[i][j]) {
+                        return false;
+                    }
                 }
             }
         }
         playerHist[0] = playerHist[oldest];
+        Arrays.fill(playerHist[oldest-1],0);
         Log.d("change", Arrays.toString(playerHist[0]));
         return true;
+    }
+    // 检查记录中的牌总数是否为1
+    private boolean isSingleCard(int[] record) {
+        int count = 0;
+        for (int card : record) {
+            if (card > 0) {
+                count++;
+            }
+        }
+        return count == 1;
     }
 
     private boolean isEmpty(int[] playerCard) {
@@ -702,15 +724,6 @@ public class FloatingWindowService extends Service {
         if (s1.length() == 0) s1.append("空");
         if (s2.length() == 0) s2.append("空");
 
-        // 更新UI显示
-//        TextView textView1 = floatView.findViewById(getResources().getIdentifier("player1", "id", getPackageName()));
-//        textView1.setText(s1.toString());
-//        TextView textView2 = floatView.findViewById(getResources().getIdentifier("player2", "id", getPackageName()));
-//        textView2.setText(s2.toString());
-//
-//        // 显示当前时间（秒级），用于调试或参考
-//        TextView textView = floatView.findViewById(getResources().getIdentifier("textView", "id", getPackageName()));
-//        textView.setText("时间" + (System.currentTimeMillis() / 1000) % 100);
     }
 
     /**
