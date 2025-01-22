@@ -56,10 +56,10 @@ public class FloatingWindowService extends Service {
     private int[] player0 = {1300, 420, 1800, 600};
     private float ratio; // 适配不同屏幕大小，需要缩放或扩大的比例
     private Yolov8Ncnn yolov8ncnn; // YOLOv8模型实例
-    private int[][] player1Hist = new int[4][16];
-    private int[][] player2Hist = new int[4][16];
-    private int[][] player3Hist = new int[4][16];
-    private int[][] player0Hist = new int[4][16];
+    private int[][] player1Hist = new int[3][16];
+    private int[][] player2Hist = new int[3][16];
+    private int[][] player3Hist = new int[3][16];
+    private int[][] player0Hist = new int[3][16];
     private long player1Time, player2Time, player3Time, player0Time;
 
     // 状态变量
@@ -271,7 +271,7 @@ public class FloatingWindowService extends Service {
         if (mImageReader != null) return;
 
         // 创建一个新的ImageReader实例，指定宽高、像素格式以及最大图像数量
-        mImageReader = ImageReader.newInstance(mScreenWidth, mScreenHeight, PixelFormat.RGBA_8888, 1);
+        mImageReader = ImageReader.newInstance(mScreenWidth, mScreenHeight, PixelFormat.RGBA_8888, 5);
     }
 
     // VirtualDisplay实例，用于显示或捕获屏幕内容
@@ -343,10 +343,10 @@ public class FloatingWindowService extends Service {
         Arrays.fill(cardCounts, 8);
         cardCounts[14] = 2;
         cardCounts[15] = 2;
-        this.player1Hist = new int[4][16];
-        this.player2Hist = new int[4][16];
-        this.player3Hist = new int[4][16];
-        this.player0Hist = new int[4][16];
+        this.player1Hist = new int[3][16];
+        this.player2Hist = new int[3][16];
+        this.player3Hist = new int[3][16];
+        this.player0Hist = new int[3][16];
         this.player1Last = new int[16];
         this.player2Last = new int[16];
         this.player3Last = new int[16];
@@ -395,6 +395,7 @@ public class FloatingWindowService extends Service {
             // 定时执行截图操作
             handler.postDelayed(new Runnable() {
                 public void run() {
+
                     // 获取最新图像
                     Image image = mImageReader.acquireLatestImage();
                     // 检查image是否为null
@@ -404,13 +405,17 @@ public class FloatingWindowService extends Service {
                         startScreenShot();
                         return;
                     }
+
                     // 转换为Bitmap格式
                     Bitmap bitmap = ImageUtils.imageToBitmap(image);
+                    image.close();
                     // 分别裁剪出两个玩家的手牌区域
+
                     Bitmap bitmap1 = ImageUtils.cropBitmap(bitmap, player1);
                     Bitmap bitmap2 = ImageUtils.cropBitmap(bitmap, player2);
                     Bitmap bitmap3 = ImageUtils.cropBitmap(bitmap, player3);
                     Bitmap bitmap0 = ImageUtils.cropBitmap(bitmap, player0);
+
                     // 初始化用于存储识别结果的数组
                     int[] list1 = new int[100]; // 假设最多有100个标签
                     int[] list2 = new int[100];
@@ -421,10 +426,32 @@ public class FloatingWindowService extends Service {
                     Arrays.fill(list3, 60);
                     Arrays.fill(list0, 60);
                     // 使用YOLO模型进行识别
+                    long startTime = System.currentTimeMillis();
                     boolean success1 = yolov8ncnn.recognizeImage(bitmap1, list1, 640); // 对玩家1的图片进行识别
                     boolean success2 = yolov8ncnn.recognizeImage(bitmap2, list2, 640); // 对玩家2的图片进行识别
                     boolean success3 = yolov8ncnn.recognizeImage(bitmap3, list3, 640); // 对玩家2的图片进行识别
                     boolean success0 = yolov8ncnn.recognizeImage(bitmap0, list0, 640); // 对玩家2的图片进行识别
+                    // 销毁 Bitmap 对象
+                    if (!bitmap.isRecycled()) {
+                        bitmap.recycle();
+                    }
+                    if (!bitmap1.isRecycled()) {
+                        bitmap1.recycle();
+                    }
+                    if (!bitmap2.isRecycled()) {
+                        bitmap2.recycle();
+                    }
+                    if (!bitmap3.isRecycled()) {
+                        bitmap3.recycle();
+                    }
+                    if (!bitmap0.isRecycled()) {
+                        bitmap0.recycle();
+                    }
+                    long endTime = System.currentTimeMillis();
+                    long totalTime = endTime - startTime;
+                    Log.d("Performance", "四张图片推理时间: " + totalTime + " ms");
+
+//                    saveBitmap(bitmap3);
                     if (success1) {
                         // 更新历史记录
                         System.arraycopy(player1Hist, 0, player1Hist, 1, player1Hist.length - 1);
@@ -502,7 +529,7 @@ public class FloatingWindowService extends Service {
                             Log.d("GameLog", "player0出牌");
                             player0Last = player0Hist[0];
                             showPlayerCardToast(player0Last, "Player 0");
-                            saveBitmap(bitmap0);
+//                            saveBitmap(bitmap0);
                         } else if (player0State == 1 && allZeroInHistory(player0Hist)) {
                             // 如果连续三次未识别到目标则重置状态
                             player0State = 0;
@@ -511,6 +538,7 @@ public class FloatingWindowService extends Service {
                     // 更新玩家手牌信息
                     updatePlayerCard();
                     // 继续下一轮截图
+
                     startScreenShot();
                 }
             }, time);
