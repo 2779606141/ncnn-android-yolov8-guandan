@@ -43,12 +43,31 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class FloatingWindowService extends Service {
+    private class Player {
+        final int[] bounds;      // 玩家区域坐标
+        final String name;       // 玩家名称
+        int count;               // 剩余牌数
+        final int[][] hist;      // 历史记录
+        int[] last;        // 上次出牌记录
+        int state;               // 当前状态
+        long time;               // 时间戳
+
+        Player(int[] bounds, String name) {
+            this.bounds = bounds;
+            this.name = name;
+            this.count = 27;
+            this.hist = new int[3][16];
+            this.last = new int[16];
+            this.state = 0;
+            this.time = System.currentTimeMillis();
+        }
+    }
     private WindowManager windowManager;
     private ViewGroup floatView;
     private int LAYOUT_TYPE;
     private WindowManager.LayoutParams floatWindowLayoutParam;
     private Context context;
-    private int[] cardCounts, player0Card, player1Last, player2Last, player3Last, player0Last;
+    private int[] cardCounts;
     private int[] handCard = {100, 500, 3000, 1200};
     private int[] player1 = {2100, 320, 2750, 520};//左x，左y，右x，右y 左上角为0，0
     private int[] player3 = {330, 340, 950, 520};
@@ -56,24 +75,10 @@ public class FloatingWindowService extends Service {
     private int[] player0 = {1300, 420, 1800, 600};
     private float ratio; // 适配不同屏幕大小，需要缩放或扩大的比例
     private Yolov8Ncnn yolov8ncnn; // YOLOv8模型实例
-    private int[][] player1Hist = new int[3][16];
-    private int[][] player2Hist = new int[3][16];
-    private int[][] player3Hist = new int[3][16];
-    private int[][] player0Hist = new int[3][16];
-    private long player1Time, player2Time, player3Time, player0Time;
-    private int player0Count = 27;
-    private int player1Count = 27;
-    private int player2Count = 27;
-    private int player3Count = 27;
-
-
-    // 状态变量
-    private int player1State = 0;
-    private int player2State = 0;
-    private int player3State = 0;
-    private int player0State = 0;
-
     private int time;
+
+    // 类成员变量
+    private Player[] players;
 
     @Override
     public void onCreate() {
@@ -119,6 +124,7 @@ public class FloatingWindowService extends Service {
             player3[i] = (int) (player3[i] * ratio);
             player0[i] = (int) (player0[i] * ratio);
         }
+
 
         // 获取LayoutInflater服务，用于加载布局文件
         LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -179,7 +185,7 @@ public class FloatingWindowService extends Service {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isScreenshotEnabled) {
+                if (isScreenshotEnabled) {
                     // 如果当前是“停止”状态，点击后停止截图和识别
                     stopScreenShot();
                     startButton.setText("开始");
@@ -323,7 +329,7 @@ public class FloatingWindowService extends Service {
     }
 
     // 标识是否启用了截图功能，默认值为true
-    private boolean isScreenshotEnabled = true;
+    private boolean isScreenshotEnabled = false;
 
     // 初始化Handler实例，用于处理延迟任务或更新UI
     private Handler handler = new Handler();
@@ -337,41 +343,21 @@ public class FloatingWindowService extends Service {
         // 移除所有之前的消息和回调，确保只运行最新的任务
         handler.removeCallbacksAndMessages(null);
 
-        // 设置截图功能为启用状态
-        isScreenshotEnabled = true;
-
         // 查找浮动视图中的"停止"按钮，并设置其文本
         TextView textView1 = floatView.findViewById(getResources().getIdentifier("stopButton", "id", getPackageName()));
         textView1.setText("停止");
 
         // 初始化玩家手牌计数数组，默认每种牌8张，王牌2张
-        this.cardCounts = new int[16];
+        cardCounts = new int[16];
         Arrays.fill(cardCounts, 8);
         cardCounts[14] = 2;
         cardCounts[15] = 2;
-        this.player1Hist = new int[3][16];
-        this.player2Hist = new int[3][16];
-        this.player3Hist = new int[3][16];
-        this.player0Hist = new int[3][16];
-        this.player1Last = new int[16];
-        this.player2Last = new int[16];
-        this.player3Last = new int[16];
-        this.player0Last = new int[16];
-        this.player1State = 0;
-        this.player2State = 0;
-        this.player3State = 0;
-        this.player0State = 0;
-        this.player1Time = System.currentTimeMillis();
-        this.player2Time = System.currentTimeMillis();
-        this.player3Time = System.currentTimeMillis();
-        this.player0Time = System.currentTimeMillis();
-        this.player0Count = 27;
-        this.player1Count = 27;
-        this.player2Count = 27;
-        this.player3Count = 27;
-
-        // 更新玩家手牌信息
-        updatePlayerCard();
+        players = new Player[]{
+                new Player(player0, "Player 0"),
+                new Player(player1, "Player 1"),
+                new Player(player2, "Player 2"),
+                new Player(player3, "Player 3")
+        };
 
         // 延迟1秒后执行一次截图操作
         handler.postDelayed(new Runnable() {
@@ -388,12 +374,11 @@ public class FloatingWindowService extends Service {
                 boolean success = yolov8ncnn.recognizeImage(bitmap, list, 1520); // 对玩家1的图片进行识别
                 // 将YOLO识别的结果转换为playerCard格式
                 int[] playerCard0 = convertYoloListToPlayerCard(list);
-                if (player0Count - countCard(playerCard0) != 0) {
+                if (27 - countCard(playerCard0) != 0) {
                     Log.d("ErrorLog", "手牌识别错误");
                     saveBitmap(bitmap);
                 }
                 bitmap.recycle();
-                player0Count=27;
                 // 根据识别结果更新玩家手牌
                 if (success && !isEmpty(playerCard0)) updateContent(playerCard0);
                 // 开始连续截图
@@ -408,6 +393,7 @@ public class FloatingWindowService extends Service {
      */
     private void startScreenShot() {
         if (isScreenshotEnabled) {
+
             // 定时执行截图操作
             handler.postDelayed(new Runnable() {
                 public void run() {
@@ -423,164 +409,10 @@ public class FloatingWindowService extends Service {
                     // 转换为Bitmap格式
                     Bitmap bitmap = ImageUtils.imageToBitmap(image);
                     image.close();
-                    if (player1Count>0) {
-                        Bitmap bitmap1 = ImageUtils.cropBitmap(bitmap, player1);
-                        int[] list1 = new int[30];
-                        Arrays.fill(list1, 60);
-                        yolov8ncnn.recognizeImage(bitmap1, list1, 640); // 对玩家1的图片进行识别
-                        bitmap1.recycle();
-// 更新历史记录
-                        System.arraycopy(player1Hist, 0, player1Hist, 1, player1Hist.length - 1);
-                        player1Hist[0] = convertYoloListToPlayerCard(list1);
-                        if (System.currentTimeMillis() - player1Time > 2000) {
-                            if (!isEmpty(player1Hist[0])
-                                    && (!Arrays.equals(player1Hist[0], player1Last) || player1State == 0)
-                                    && isNotChangeWithHistory(player1Hist)) {
-                                // 当首次检测到出牌且连续三次结果一致时确认出牌
-                                player1State = 1;
-                                player1Time = System.currentTimeMillis();
-                                Log.d("GameLog", "player1出牌");
-                                player1Last = player1Hist[0];
-                                player1Count -= countCard(player1Last);
-                                showPlayerCardToast(player1Last, "Player 1");
-                                updateContent(player1Last);
-//                            saveBitmap(bitmap1);
-                            } else if (isNewCardDetected(player1Hist)
-                                    && (!Arrays.equals(player1Hist[player1Hist.length - 1], player1Last) || player1State == 0)) {
-                                player1State = 1;
-                                player1Time = System.currentTimeMillis() + 1000;
-                                Log.d("GameLog", "player1出牌");
-                                player1Last = player1Hist[player1Hist.length - 1];
-                                player1Count -= countCard(player1Last);
-                                showPlayerCardToast(player1Last, "Player 1");
-                                updateContent(player1Last);
-                            } else if (player1State == 1 && allZeroInHistory(player1Hist)) {
-                                // 如果连续三次未识别到目标则重置状态
-                                player1State = 0;
-                            }
-                        } else if (player1State == 1 && allZeroInHistory(player1Hist)) {
-                            // 如果连续三次未识别到目标则重置状态
-                            player1State = 0;
-                        }
-                    }
-                    if (player2Count>0) {
-                        Bitmap bitmap2 = ImageUtils.cropBitmap(bitmap, player2); // 裁剪玩家2的图片
-                        int[] list2 = new int[30]; // 创建一个长度为30的数组
-                        Arrays.fill(list2, 60); // 将数组填充为60
-                        yolov8ncnn.recognizeImage(bitmap2, list2, 640); // 对玩家2的图片进行识别
-                        bitmap2.recycle(); // 释放Bitmap资源
-                        // 更新历史记录
-                        System.arraycopy(player2Hist, 0, player2Hist, 1, player2Hist.length - 1);
-                        player2Hist[0] = convertYoloListToPlayerCard(list2);
-                        if (System.currentTimeMillis() - player2Time > 2000) {
-                            if (!isEmpty(player2Hist[0])
-                                    && (!Arrays.equals(player2Hist[0], player2Last) || player2State == 0)
-                                    && isNotChangeWithHistory(player2Hist)) {
-                                // 当首次检测到出牌且连续三次结果一致时确认出牌
-                                player2State = 1;
-                                player2Time = System.currentTimeMillis();
-                                Log.d("GameLog", "player2出牌");
-                                player2Last = player2Hist[0];
-                                player2Count -= countCard(player2Last);
-                                showPlayerCardToast(player2Last, "Player 2");
-                                updateContent(player2Last);
-//                              saveBitmap(bitmap2);
-                            } else if (isNewCardDetected(player2Hist)
-                                    && (!Arrays.equals(player2Hist[player2Hist.length - 1], player2Last) || player2State == 0)) {
-                                player2State = 1;
-                                player2Time = System.currentTimeMillis() + 1000;
-                                Log.d("GameLog", "player2出牌");
-                                player2Last = player2Hist[player2Hist.length - 1];
-                                player2Count -= countCard(player2Last);
-                                showPlayerCardToast(player2Last, "Player 2");
-                                updateContent(player2Last);
-                            } else if (player2State == 1 && allZeroInHistory(player2Hist)) {
-                                // 如果连续三次未识别到目标则重置状态
-                                player2State = 0;
-                            }
-                        } else if (player2State == 1 && allZeroInHistory(player2Hist)) {
-                            // 如果连续三次未识别到目标则重置状态
-                            player2State = 0;
-                        }
-                    }
-                    if (player3Count>0) {
-                        Bitmap bitmap3 = ImageUtils.cropBitmap(bitmap, player3); // 裁剪玩家3的图片
-                        int[] list3 = new int[30]; // 创建一个长度为30的数组
-                        Arrays.fill(list3, 60); // 将数组填充为60
-                        yolov8ncnn.recognizeImage(bitmap3, list3, 640); // 对玩家3的图片进行识别
-                        bitmap3.recycle(); // 释放Bitmap资源
-                        // 更新历史记录
-                        System.arraycopy(player3Hist, 0, player3Hist, 1, player3Hist.length - 1);
-                        player3Hist[0] = convertYoloListToPlayerCard(list3);
-                        if (System.currentTimeMillis() - player3Time > 2000) {
-                            if (!isEmpty(player3Hist[0])
-                                    && (!Arrays.equals(player3Hist[0], player3Last) || player3State == 0)
-                                    && isNotChangeWithHistory(player3Hist)) {
-                                // 当首次检测到出牌且连续三次结果一致时确认出牌
-                                player3State = 1;
-                                player3Time = System.currentTimeMillis();
-                                Log.d("GameLog", "player3出牌");
-                                player3Last = player3Hist[0];
-                                player3Count -= countCard(player3Last);
-                                showPlayerCardToast(player3Last, "Player 3");
-                                updateContent(player3Last);
-//          saveBitmap(bitmap3);
-                            } else if (isNewCardDetected(player3Hist)
-                                    && (!Arrays.equals(player3Hist[player3Hist.length - 1], player3Last) || player3State == 0)) {
-                                player3State = 1;
-                                player3Time = System.currentTimeMillis() + 1000;
-                                Log.d("GameLog", "player3出牌");
-                                player3Last = player3Hist[player3Hist.length - 1];
-                                player3Count -= countCard(player3Last);
-                                showPlayerCardToast(player3Last, "Player 3");
-                                updateContent(player3Last);
-                            } else if (player3State == 1 && allZeroInHistory(player3Hist)) {
-                                // 如果连续三次未识别到目标则重置状态
-                                player3State = 0;
-                            }
-                        } else if (player3State == 1 && allZeroInHistory(player3Hist)) {
-                            // 如果连续三次未识别到目标则重置状态
-                            player3State = 0;
-                        }
-                    }
-                    if (player0Count>0) {
-                        Bitmap bitmap0 = ImageUtils.cropBitmap(bitmap, player0); // 裁剪玩家0的图片
-                        int[] list0 = new int[30]; // 创建一个长度为30的数组
-                        Arrays.fill(list0, 60); // 将数组填充为60
-                        yolov8ncnn.recognizeImage(bitmap0, list0, 640); // 对玩家0的图片进行识别
-                        bitmap0.recycle(); // 释放Bitmap资源
-                        // 更新历史记录
-                        System.arraycopy(player0Hist, 0, player0Hist, 1, player0Hist.length - 1);
-                        player0Hist[0] = convertYoloListToPlayerCard(list0);
-                        if (System.currentTimeMillis() - player0Time > 2000) {
-                            if (!isEmpty(player0Hist[0])
-                                    && (!Arrays.equals(player0Hist[0], player0Last) || player0State == 0)
-                                    && isNotChangeWithHistory(player0Hist)) {
-                                // 当首次检测到出牌且连续三次结果一致时确认出牌
-                                player0State = 1;
-                                player0Time = System.currentTimeMillis();
-                                Log.d("GameLog", "player0出牌");
-                                player0Last = player0Hist[0];
-                                player0Count -= countCard(player0Last);
-                                showPlayerCardToast(player0Last, "Player 0");
-//                                updateContent(player0Last);
-//          saveBitmap(bitmap0);
-                            } else if (isNewCardDetected(player0Hist)
-                                    && (!Arrays.equals(player0Hist[player0Hist.length - 1], player0Last) || player0State == 0)) {
-                                player0State = 1;
-                                player0Time = System.currentTimeMillis() + 1000;
-                                Log.d("GameLog", "player0出牌");
-                                player0Last = player0Hist[player0Hist.length - 1];
-                                player0Count -= countCard(player0Last);
-                                showPlayerCardToast(player0Last, "Player 0");
-//                                updateContent(player0Last);
-                            } else if (player0State == 1 && allZeroInHistory(player0Hist)) {
-                                // 如果连续三次未识别到目标则重置状态
-                                player0State = 0;
-                            }
-                        } else if (player0State == 1 && allZeroInHistory(player0Hist)) {
-                            // 如果连续三次未识别到目标则重置状态
-                            player0State = 0;
+                    // 处理所有玩家
+                    for (Player player : players) {
+                        if (player.count > 0) {
+                            processPlayer(player, bitmap);
                         }
                     }
                     long startTime = System.currentTimeMillis();
@@ -600,6 +432,56 @@ public class FloatingWindowService extends Service {
         }
     }
 
+    private void processPlayer(Player player, Bitmap sourceBitmap) {
+        // 1. 裁剪玩家区域
+        Bitmap playerBitmap = ImageUtils.cropBitmap(sourceBitmap, player.bounds);
+
+        // 2. 执行识别
+        int[] yoloList = new int[30];
+        Arrays.fill(yoloList, 60);
+        yolov8ncnn.recognizeImage(playerBitmap, yoloList, 640);
+        playerBitmap.recycle();
+
+        // 3. 更新历史记录
+        System.arraycopy(player.hist, 0, player.hist, 1, player.hist.length - 1);
+        player.hist[0] = convertYoloListToPlayerCard(yoloList);
+
+        // 4. 状态判断逻辑
+        if (System.currentTimeMillis() - player.time > 2000) {
+            handlePlayerState(player);
+        }
+        if (player.state == 1 && allZeroInHistory(player.hist)) {
+            player.state = 0;
+        }
+    }
+
+    private void handlePlayerState(Player player) {
+        int[] current = player.hist[0];
+
+        if (!isEmpty(current) &&
+                (!Arrays.equals(current, player.last) || player.state == 0) &&
+                isNotChangeWithHistory(player.hist)) {
+
+            updatePlayerStatus(player, current);
+
+        } else if (isNewCardDetected(player.hist) &&
+                (!Arrays.equals(player.hist[player.hist.length - 1], player.last) ||
+                        player.state == 0)) {
+
+            updatePlayerStatus(player, player.hist[player.hist.length - 1]);
+        }
+    }
+
+    private void updatePlayerStatus(Player player, int[] cards) {
+        player.state = 1;
+        player.time = System.currentTimeMillis();
+        player.last = cards.clone();
+        player.count -= countCard(cards);
+
+        showPlayerCardToast(cards, player.name);
+        if (player.name.equals("Player 0")) return; // 特殊处理玩家0
+        updateContent(cards); // 其他玩家更新全局计数
+    }
     public boolean isNewCardDetected(int[][] playerHist) {
         int oldest = playerHist.length - 1;
         if (isEmpty(playerHist[oldest])) {
@@ -681,12 +563,9 @@ public class FloatingWindowService extends Service {
         }
         // 显示Toast消息
         Log.d("GameLog", sb.toString());
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(FloatingWindowService.this, sb.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() ->
+                Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show()
+        );
     }
 
     // 将YOLO识别结果转换为playerCard格式
@@ -733,36 +612,6 @@ public class FloatingWindowService extends Service {
         }
     }
 
-    /**
-     * 更新玩家手牌信息。
-     * 根据player1Card和player2Card数组中的数据构建两个玩家的手牌表示，并更新UI。
-     */
-    public void updatePlayerCard() {
-        // 使用StringBuilder来构建玩家手牌字符串
-        StringBuilder s1 = new StringBuilder();
-        StringBuilder s2 = new StringBuilder();
-
-        // 遍历所有牌面值
-        for (int i = 1; i < 15; i++) {
-            // 如果玩家1拥有该牌，则将其名字添加到s1中相应次数
-            if (player1Last[i] != 0) {
-                for (int j = 0; j < player1Last[i]; j++) {
-                    s1.append(name[i]);
-                }
-            }
-            // 对于玩家2执行相同操作
-            if (player2Last[i] != 0) {
-                for (int j = 0; j < player2Last[i]; j++) {
-                    s2.append(name[i]);
-                }
-            }
-        }
-
-        // 如果玩家手牌为空，则设置默认文本为“空”
-        if (s1.length() == 0) s1.append("空");
-        if (s2.length() == 0) s2.append("空");
-
-    }
 
     /**
      * 停止或继续截图。
@@ -783,3 +632,4 @@ public class FloatingWindowService extends Service {
         return null;
     }
 }
+
