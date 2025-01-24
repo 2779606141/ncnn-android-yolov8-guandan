@@ -174,12 +174,23 @@ public class FloatingWindowService extends Service {
 
         // 设置开始按钮的点击事件
         Button startButton = floatView.findViewById(R.id.startButton);
+        startButton.setEnabled(false);
+        startButton.setText("禁用");
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createImageReader();
-                virtualDisplay();
-                initScreenShot();
+                if (!isScreenshotEnabled) {
+                    // 如果当前是“停止”状态，点击后停止截图和识别
+                    stopScreenShot();
+                    startButton.setText("开始");
+                } else {
+                    // 如果当前是“开始”状态，点击后启动截图和识别
+                    createImageReader();
+                    virtualDisplay();
+                    initScreenShot();
+                    startButton.setText("停止");
+                }
+                isScreenshotEnabled = !isScreenshotEnabled;
             }
         });
 
@@ -257,6 +268,21 @@ public class FloatingWindowService extends Service {
             // 更新浮动视图的布局参数
             windowManager.updateViewLayout(floatView, floatWindowLayoutParam);
         }
+
+        // 获取开始按钮
+        Button startButton = floatView.findViewById(R.id.startButton);
+
+        // 根据屏幕方向更新按钮状态
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // 如果是竖屏，禁用开始按钮并显示提示
+            startButton.setEnabled(false);
+            startButton.setText("禁用");
+        } else {
+            // 如果是横屏，启用开始按钮
+            startButton.setEnabled(true);
+            startButton.setText("开始");
+        }
+
     }
 
     // 定义屏幕宽度、高度及密度变量
@@ -298,31 +324,6 @@ public class FloatingWindowService extends Service {
 
     // 标识是否启用了截图功能，默认值为true
     private boolean isScreenshotEnabled = true;
-
-    /**
-     * 比较两个数组的内容，判断是否有任何变化。
-     * 若current数组中的元素与last数组不一致，则返回true表示有变化；否则返回false。
-     *
-     * @param last    上一次的状态数组
-     * @param current 当前状态数组
-     * @return 是否发生变化
-     */
-    public boolean isChange(int[] last, int[] current) {
-        // 首先检查两个数组是否为null或长度不一致
-        if (last == null || current == null || last.length != current.length) {
-            return true; // 如果任一数组为null或长度不一致，则认为有变化
-        }
-
-        // 比较last和current数组，若有不同之处，则返回true
-        for (int i = 0; i < last.length; i++) {
-            if (current[i] != last[i]) {
-                return true;
-            }
-        }
-
-        // 如果没有发现任何差异，则返回false
-        return false;
-    }
 
     // 初始化Handler实例，用于处理延迟任务或更新UI
     private Handler handler = new Handler();
@@ -391,6 +392,7 @@ public class FloatingWindowService extends Service {
                     Log.d("ErrorLog", "手牌识别错误");
                     saveBitmap(bitmap);
                 }
+                bitmap.recycle();
                 player0Count=27;
                 // 根据识别结果更新玩家手牌
                 if (success && !isEmpty(playerCard0)) updateContent(playerCard0);
@@ -598,44 +600,6 @@ public class FloatingWindowService extends Service {
         }
     }
 
-//    public boolean isNewCardDetected(int[][] playerHist) {
-//        int oldest = playerHist.length - 1;
-//        if(isEmpty(playerHist[oldest])){
-//            return false;
-//        }
-//        if(isSingleCard(playerHist[oldest])){
-//            if(!Arrays.equals(playerHist[oldest], playerHist[oldest - 1])){
-//                return false;
-//            }
-//            for (int i = 0; i < oldest-1; i++) {
-//                // 比较当前历史记录和最老记录的每一位
-//                for (int j = 0; j < playerHist[i].length; j++) {
-//                    if (playerHist[oldest][j] < playerHist[i][j]) {
-//                        return false;
-//                    }
-//                }
-//            }
-//        }
-//        else{
-//            // 遍历所有历史记录（除了最老的记录）
-//            for (int i = 0; i < oldest; i++) {
-//                if (isEmpty(playerHist[i])) {
-//                    return false;
-//                }
-//                // 比较当前历史记录和最老记录的每一位
-//                for (int j = 0; j < playerHist[i].length; j++) {
-//                    if (playerHist[oldest][j] < playerHist[i][j]) {
-//                        return false;
-//                    }
-//                }
-//            }
-//        }
-//        playerHist[0] = playerHist[oldest];
-//        Arrays.fill(playerHist[oldest-1],0);
-//        Log.d("change", Arrays.toString(playerHist[0]));
-//        return true;
-//    }
-
     public boolean isNewCardDetected(int[][] playerHist) {
         int oldest = playerHist.length - 1;
         if (isEmpty(playerHist[oldest])) {
@@ -650,19 +614,7 @@ public class FloatingWindowService extends Service {
                 }
             }
         }
-        Log.d("change", "change");
         return true;
-    }
-
-    // 检查记录中的牌总数是否为1
-    private boolean isSingleCard(int[] record) {
-        int count = 0;
-        for (int card : record) {
-            if (card > 0) {
-                count++;
-            }
-        }
-        return count == 1;
     }
 
     private boolean isEmpty(int[] playerCard) {
@@ -817,23 +769,8 @@ public class FloatingWindowService extends Service {
      * 切换isScreenshotEnabled标志位，并根据状态更新按钮文本。如果重新启用截图，则调用startScreenShot()方法开始截图流程。
      */
     private void stopScreenShot() {
-        if (isScreenshotEnabled) {
-            // 禁用截图功能
-            isScreenshotEnabled = false;
-            // 移除所有回调和消息，停止定时任务
-            handler.removeCallbacksAndMessages(null);
-            // 更新按钮文本为“继续”
-            TextView textView1 = floatView.findViewById(getResources().getIdentifier("stopButton", "id", getPackageName()));
-            textView1.setText("继续");
-        } else {
-            // 启用截图功能
-            isScreenshotEnabled = true;
-            // 更新按钮文本为“停止”
-            TextView textView1 = floatView.findViewById(getResources().getIdentifier("stopButton", "id", getPackageName()));
-            textView1.setText("停止");
-            // 开始截图过程
-            startScreenShot();
-        }
+        // 移除所有回调和消息，停止定时任务
+        handler.removeCallbacksAndMessages(null);
     }
 
     /**
