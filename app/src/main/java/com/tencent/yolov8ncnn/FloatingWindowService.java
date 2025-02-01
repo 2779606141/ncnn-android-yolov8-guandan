@@ -13,11 +13,9 @@ import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.Image;
 import android.media.ImageReader;
-import android.media.MediaScannerConnection;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -35,40 +33,17 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.UUID;
 
-public class FloatingWindowService extends Service {
-    private class Player {
-        final int[] bounds;      // 玩家区域坐标
-        final String name;       // 玩家名称
-        int count;               // 剩余牌数
-        final int[][] hist;      // 历史记录
-        int[] last;        // 上次出牌记录
-        int state;               // 当前状态
-        long time;               // 时间戳
-
-        Player(int[] bounds, String name) {
-            this.bounds = bounds;
-            this.name = name;
-            this.count = 27;
-            this.hist = new int[3][16];
-            this.last = new int[16];
-            this.state = 0;
-            this.time = System.currentTimeMillis();
-        }
-    }
+public class FloatingWindowService extends Service implements CardUpdateListener  {
     private WindowManager windowManager;
     private ViewGroup floatView;
     private int LAYOUT_TYPE;
     private WindowManager.LayoutParams floatWindowLayoutParam;
-    private Context context;
+    private Context context=this;
     private int[] cardCounts;
-    private int[] handCard = {100, 500, 3000, 1200};
+    private int[] handCard = {200, 500, 3000, 1200};
     private int[] player1 = {2100, 320, 2750, 520};//左x，左y，右x，右y 左上角为0，0
     private int[] player3 = {330, 340, 950, 520};
     private int[] player2 = {1300, 200, 1800, 360};
@@ -92,7 +67,6 @@ public class FloatingWindowService extends Service {
         if (!loadModel()) {
             Toast.makeText(this, "模型加载失败", Toast.LENGTH_SHORT).show();
         }
-
 
         // 获取应用的全局Context
         this.context = this.getApplicationContext();
@@ -124,7 +98,6 @@ public class FloatingWindowService extends Service {
             player3[i] = (int) (player3[i] * ratio);
             player0[i] = (int) (player0[i] * ratio);
         }
-
 
         // 获取LayoutInflater服务，用于加载布局文件
         LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -358,6 +331,9 @@ public class FloatingWindowService extends Service {
                 new Player(player2, "Player 2"),
                 new Player(player3, "Player 3")
         };
+        for (Player player : players) {
+            player.setCardUpdateListener(this);  // 设置Service为监听器
+        }
 
         // 延迟1秒后执行一次截图操作
         handler.postDelayed(new Runnable() {
@@ -373,14 +349,14 @@ public class FloatingWindowService extends Service {
                 //识别手牌
                 boolean success = yolov8ncnn.recognizeImage(bitmap, list, 1520); // 对玩家1的图片进行识别
                 // 将YOLO识别的结果转换为playerCard格式
-                int[] playerCard0 = convertYoloListToPlayerCard(list);
-                if (27 - countCard(playerCard0) != 0) {
+                int[] playerCard0 = CardUtils.convertYoloListToPlayerCard(list);
+                if (27 - CardUtils.countCard(playerCard0) != 0) {
                     Log.d("ErrorLog", "手牌识别错误");
-                    saveBitmap(bitmap);
+                    ImageUtils.saveBitmap(context,bitmap);
                 }
                 bitmap.recycle();
                 // 根据识别结果更新玩家手牌
-                if (success && !isEmpty(playerCard0)) updateContent(playerCard0);
+                if (success && !CardUtils.isEmpty(playerCard0)) updateContent(playerCard0);
                 // 开始连续截图
                 startScreenShot();
             }
@@ -397,6 +373,7 @@ public class FloatingWindowService extends Service {
             // 定时执行截图操作
             handler.postDelayed(new Runnable() {
                 public void run() {
+                    long startTime = System.currentTimeMillis();
                     // 获取最新图像
                     Image image = mImageReader.acquireLatestImage();
                     // 检查image是否为null
@@ -415,15 +392,11 @@ public class FloatingWindowService extends Service {
                             processPlayer(player, bitmap);
                         }
                     }
-                    long startTime = System.currentTimeMillis();
                     // 销毁 Bitmap 对象
                     bitmap.recycle();
                     long endTime = System.currentTimeMillis();
                     long totalTime = endTime - startTime;
 //                    Log.d("Performance", "四张图片推理时间: " + totalTime + " ms");
-//                    saveBitmap(bitmap2);
-                    // 更新玩家手牌信息
-//                    updatePlayerCard();
                     // 继续下一轮截图
 
                     startScreenShot();
@@ -432,167 +405,18 @@ public class FloatingWindowService extends Service {
         }
     }
 
-    private void processPlayer(Player player, Bitmap sourceBitmap) {
-        // 1. 裁剪玩家区域
-        Bitmap playerBitmap = ImageUtils.cropBitmap(sourceBitmap, player.bounds);
-
-        // 2. 执行识别
-        int[] yoloList = new int[30];
-        Arrays.fill(yoloList, 60);
-        yolov8ncnn.recognizeImage(playerBitmap, yoloList, 640);
-        playerBitmap.recycle();
-
-        // 3. 更新历史记录
-        System.arraycopy(player.hist, 0, player.hist, 1, player.hist.length - 1);
-        player.hist[0] = convertYoloListToPlayerCard(yoloList);
-
-        // 4. 状态判断逻辑
-        if (System.currentTimeMillis() - player.time > 2000) {
-            handlePlayerState(player);
-        }
-        if (player.state == 1 && allZeroInHistory(player.hist)) {
-            player.state = 0;
-        }
+    private void processPlayer(Player player, Bitmap bitmap) {
+        player.processPlayer(bitmap, yolov8ncnn, this);
+    }
+    // 实现回调接口方法
+    @Override
+    public void onCardsUpdated(int[] playedCards) {
+        updateContent(playedCards);
     }
 
-    private void handlePlayerState(Player player) {
-        int[] current = player.hist[0];
-
-        if (!isEmpty(current) &&
-                (!Arrays.equals(current, player.last) || player.state == 0) &&
-                isNotChangeWithHistory(player.hist)) {
-
-            updatePlayerStatus(player, current);
-
-        } else if (isNewCardDetected(player.hist) &&
-                (!Arrays.equals(player.hist[player.hist.length - 1], player.last) ||
-                        player.state == 0)) {
-
-            updatePlayerStatus(player, player.hist[player.hist.length - 1]);
-        }
-    }
-
-    private void updatePlayerStatus(Player player, int[] cards) {
-        player.state = 1;
-        player.time = System.currentTimeMillis();
-        player.last = cards.clone();
-        player.count -= countCard(cards);
-
-        showPlayerCardToast(cards, player.name);
-        if (player.name.equals("Player 0")) return; // 特殊处理玩家0
-        updateContent(cards); // 其他玩家更新全局计数
-    }
-    public boolean isNewCardDetected(int[][] playerHist) {
-        int oldest = playerHist.length - 1;
-        if (isEmpty(playerHist[oldest])) {
-            return false;
-        }
-        // 遍历所有历史记录（除了最老的记录）
-        for (int i = 0; i < oldest; i++) {
-            // 比较当前历史记录和最老记录的每一位
-            for (int j = 0; j < playerHist[i].length; j++) {
-                if (playerHist[oldest][j] < playerHist[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean isEmpty(int[] playerCard) {
-        for (int i = 1; i < playerCard.length; i++) {
-            if (playerCard[i] != 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean isNotChangeWithHistory(int[][] hist) {
-        for (int i = 1; i < hist.length; i++) {
-            if (!Arrays.equals(hist[i], hist[0])) return false;
-        }
-        return true;
-    }
-
-    private boolean allZeroInHistory(int[][] hist) {
-        for (int[] record : hist) {
-            if (!isEmpty(record)) return false;
-        }
-        return true;
-    }
-
-    private void saveBitmap(Bitmap bitmap) {
-        // 定义保存Bitmap的文件路径和文件名
-        String filename = UUID.randomUUID().toString() + ".png";
-        File picturesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File appPicturesDirectory = new File(picturesDirectory, "MyAppFolder"); // "MyAppFolder"是你应用的文件夹
-        if (!appPicturesDirectory.exists()) {
-            if (!appPicturesDirectory.mkdirs()) {
-                Log.e("BitmapSave", "Failed to create directory for saving images.");
-                return;
-            }
-        }
-        File outputFile = new File(appPicturesDirectory, filename);
-
-        try {
-            // 将Bitmap压缩成文件
-            FileOutputStream out = new FileOutputStream(outputFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // 100表示不压缩
-            out.flush();
-            out.close();
-
-            // 将文件插入到媒体库，这样相册应用就能看到这张图片了
-            MediaScannerConnection.scanFile(this, new String[]{outputFile.getAbsolutePath()}, null, null);
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("BitmapSave", "Error saving bitmap: " + e.getMessage());
-        }
-    }
 
-    private void showPlayerCardToast(int[] playerCard, String playerName) {
-        StringBuilder sb = new StringBuilder(playerName).append(" 出牌: ");
-        for (int i = 1; i < playerCard.length; i++) {
-            if (playerCard[i] != 0) {
-                for (int j = 0; j < playerCard[i]; j++) {
-                    sb.append(name[i]).append(" ");
-                }
-            }
-        }
-        // 显示Toast消息
-        Log.d("GameLog", sb.toString());
-        new Handler(Looper.getMainLooper()).post(() ->
-                Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show()
-        );
-    }
-
-    // 将YOLO识别结果转换为playerCard格式
-    private int[] convertYoloListToPlayerCard(int[] yoloList) {
-        int[] playerCard = new int[16]; // 初始化长度为15的数组
-        for (int id : yoloList) {
-            if (id >= 0 && id < 52) { // 确保ID在有效范围内
-                int cardValue = id / 4 + 1; // 计算牌面值，忽略花色
-                playerCard[cardValue]++; // 对应位置计数加一
-            } else if (id == 52) { // 大王
-                playerCard[14]++;
-            } else if (id == 53) { // 小王
-                playerCard[15]++;
-            } else {
-                break;
-            }
-        }
-        return playerCard;
-    }
-
-    private int countCard(int[] playerCard) {
-        int total = 0; // 初始化总数为0
-        for (int count : playerCard) {
-            total += count; // 累加每个位置的值
-        }
-        return total; // 返回总数
-    }
 
     // 定义牌面名称数组，包括特殊牌（小王、大王）
     String[] name = {" ", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "大王", "小王"};
@@ -602,16 +426,18 @@ public class FloatingWindowService extends Service {
      * 根据给定的价值数组更新卡片计数，并刷新UI上的文本视图以反映新的计数。
      */
     public void updateContent(int[] value) {
-        for (int i = 1; i < 16; i++) {
-            // 减去相应的卡片数量
-            cardCounts[i] -= value[i];
-            // 查找并更新对应的TextView
-            TextView textView = floatView.findViewById(getResources().getIdentifier("textView" + i, "id", getPackageName()));
-            // 设置文本为当前牌面名及其剩余数量
-            textView.setText(name[i] + "\n" + cardCounts[i]);
-        }
+        runOnUiThread(() -> {
+            for (int i = 1; i < 16; i++) {
+                cardCounts[i] -= value[i];
+                TextView textView = floatView.findViewById(
+                        getResources().getIdentifier("textView" + i, "id", getPackageName()));
+                textView.setText(name[i] + "\n" + cardCounts[i]);
+            }
+        });
     }
-
+    private void runOnUiThread(Runnable action) {
+        new Handler(Looper.getMainLooper()).post(action);
+    }
 
     /**
      * 停止或继续截图。
@@ -630,6 +456,34 @@ public class FloatingWindowService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+    // 在服务销毁时释放所有资源
+    @Override
+    public void onDestroy() {
+        for (Player player : players) {
+            player.setCardUpdateListener(null);
+        }
+        super.onDestroy();
+        releaseResources();
+        if (floatView != null && windowManager != null) {
+            windowManager.removeView(floatView);
+        }
+    }
+
+    private void releaseResources() {
+        // 释放虚拟显示相关资源
+        if (mVirtualDisplay != null) {
+            mVirtualDisplay.release();
+            mVirtualDisplay = null;
+        }
+        if (mImageReader != null) {
+            mImageReader.close();
+            mImageReader = null;
+        }
+        if (mMediaProjection != null) {
+            mMediaProjection.stop();
+            mMediaProjection = null;
+        }
     }
 }
 
