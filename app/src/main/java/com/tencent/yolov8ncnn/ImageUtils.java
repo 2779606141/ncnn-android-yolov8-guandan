@@ -59,8 +59,7 @@ public class ImageUtils {
     }
 
     public static Bitmap cropBitmap(Bitmap sourceBitmap, int[] area) {
-        Bitmap croppedBitmap = Bitmap.createBitmap(sourceBitmap, area[0], area[1], area[2] - area[0], area[3] - area[1]);
-        return croppedBitmap;
+        return Bitmap.createBitmap(sourceBitmap, area[0], area[1], area[2] - area[0], area[3] - area[1]);
     }
 
     public static void saveBitmap(Context context, Bitmap bitmap) {

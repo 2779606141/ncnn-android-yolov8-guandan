@@ -75,14 +75,11 @@ public class Player {
         count -= CardUtils.countCard(cards);
 
         showCardToast(cards, context);
-        if (!name.equals("Player 0")) {
             if (cardUpdateListener != null) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    cardUpdateListener.onCardsUpdated(cards);
+                    cardUpdateListener.onCardsUpdated(cards,Character.getNumericValue(name.charAt(name.length() - 1)));
                 });
             }
-            // 这里需要回调到Service更新UI，可以通过接口实现
-        }
     }
 
     private boolean isNewCardDetected() {
@@ -121,8 +118,8 @@ public class Player {
             }
         }
         Log.d("GameLog", sb.toString());
-        new Handler(Looper.getMainLooper()).post(() ->
-                Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show()
-        );
+//        new Handler(Looper.getMainLooper()).post(() ->
+//                Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show()
+//        );
     }
 }
