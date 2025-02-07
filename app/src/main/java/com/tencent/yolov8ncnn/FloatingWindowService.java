@@ -1,7 +1,6 @@
 package com.tencent.yolov8ncnn;
 
 import static android.content.ContentValues.TAG;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -32,9 +31,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,19 +39,19 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-public class FloatingWindowService extends Service implements CardUpdateListener  {
+public class FloatingWindowService extends Service implements CardUpdateListener {
     private WindowManager windowManager;
     private ViewGroup floatView;
     private int LAYOUT_TYPE;
     private WindowManager.LayoutParams floatWindowLayoutParam;
-    private Context context=this;
+    private Context context = this;
     private int[] cardCounts;
     private int[] handCard = {200, 500, 3000, 1200};
     private int[] player1 = {2100, 320, 2750, 520};//左x，左y，右x，右y 左上角为0，0
-    private int[] player3 = {330, 340, 950, 520};
+    private int[] player3 = {330, 340, 900, 530};
     private int[] player2 = {1300, 200, 1800, 360};
     private int[] player0 = {1300, 420, 1800, 600};
+    private int[] laizi = {300, 70, 360, 150};
     private float ratio; // 适配不同屏幕大小，需要缩放或扩大的比例
     private Yolov8Ncnn yolov8ncnn; // YOLOv8模型实例
     private int time;
@@ -106,6 +103,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             player2[i] = (int) (player2[i] * ratio);
             player3[i] = (int) (player3[i] * ratio);
             player0[i] = (int) (player0[i] * ratio);
+            laizi[i] = (int) (laizi[i] * ratio);
         }
 
         // 获取LayoutInflater服务，用于加载布局文件
@@ -214,12 +212,14 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 
         windowManager.addView(handCardOverlayView, params);
     }
+
     private void removeHandCardOverlay() {
         if (handCardOverlayView != null && handCardOverlayView.getParent() != null) {
             windowManager.removeView(handCardOverlayView);
             handCardOverlayView = null;
         }
     }
+
     private List<int[]> getAdjustedPlayerCoordinates() {
         List<int[]> adjustedPlayers = new ArrayList<>();
         Display display = windowManager.getDefaultDisplay();
@@ -248,6 +248,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 
         return adjustedPlayers;
     }
+
     // 尝试加载YOLOv8模型
     private boolean loadModel() {
         try {
@@ -404,30 +405,44 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         }
 
         // 延迟1秒后执行一次截图操作
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                // 获取ImageReader中最新的图像
-                Image image = mImageReader.acquireLatestImage();
-                // 将图像转换为Bitmap格式
-                Bitmap bitmap = ImageUtils.imageToBitmap(image);
-                // 裁剪出感兴趣的手牌区域
-                bitmap = ImageUtils.cropBitmap(bitmap, handCard);
-                int[] list = new int[100];
-                Arrays.fill(list, 60);
-                //识别手牌
-                boolean success = yolov8ncnn.recognizeImage(bitmap, list, 1520); // 对玩家1的图片进行识别
-                // 将YOLO识别的结果转换为playerCard格式
-                int[] playerCard0 = CardUtils.convertYoloListToPlayerCard(list);
-                if (27 - CardUtils.countCard(playerCard0) != 0) {
-                    Log.d("ErrorLog", "手牌识别错误");
-                    ImageUtils.saveBitmap(context,bitmap);
+        handler.postDelayed(() -> {
+            // 获取ImageReader中最新的图像
+            Image image = mImageReader.acquireLatestImage();
+            // 将图像转换为Bitmap格式
+            Bitmap bitmap = ImageUtils.imageToBitmap(image);
+            Bitmap bitmap4 = ImageUtils.cropBitmap(bitmap, laizi);
+            // 裁剪出感兴趣的手牌区域
+            bitmap = ImageUtils.cropBitmap(bitmap, handCard);
+            ImageUtils.saveBitmap(context, bitmap4);
+            new OCRHelper().recognizeCharacter(bitmap4, new OCRHelper.OCRCallback() {
+                @Override
+                public void onResult(String character) {
+                    // 显示识别结果（例如："A" 或 "5"）
+                    runOnUiThread(() -> {
+                        Log.d("OCR","识别结果: " + character);
+                    });
                 }
-                bitmap.recycle();
-                // 根据识别结果更新玩家手牌
-                if (success && !CardUtils.isEmpty(playerCard0)) updateContent(playerCard0);
-                // 开始连续截图
-                startScreenShot();
+                @Override
+                public void onError(String error) {
+                    Log.e("OCR", "识别失败: " + error);
+                }
+            });
+            int[] list = new int[100];
+            Arrays.fill(list, 60);
+            //识别手牌
+            boolean success = yolov8ncnn.recognizeImage(bitmap, list, 1520); // 对玩家1的图片进行识别
+            // 将YOLO识别的结果转换为playerCard格式
+            int[] playerCard0 = CardUtils.convertYoloListToPlayerCard(list);
+            if (27 - CardUtils.countCard(playerCard0) != 0) {
+                Log.d("ErrorLog", "手牌识别错误");
+                ImageUtils.saveBitmap(context, bitmap);
             }
+            bitmap.recycle();
+            bitmap4.recycle();
+            // 根据识别结果更新玩家手牌
+            if (success && !CardUtils.isEmpty(playerCard0)) updateContent(playerCard0);
+            // 开始连续截图
+            startScreenShot();
         }, 1000);
     }
 
@@ -437,39 +452,39 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     // 修改startScreenShot方法
     private void startScreenShot() {
         if (isScreenshotEnabled) {
-            handler.postDelayed(() -> {
-                executor.execute(() -> {
-                    long startTime = System.currentTimeMillis();
-                    Image image = mImageReader.acquireLatestImage();
-                    if (image == null) {
-                        Log.e(TAG, "Image acquisition failed.");
-                        return;
+            handler.postDelayed(() -> executor.execute(() -> {
+                long startTime = System.currentTimeMillis();
+                Image image = mImageReader.acquireLatestImage();
+                if (image == null) {
+                    Log.e(TAG, "Image acquisition failed.");
+                    return;
+                }
+                Bitmap bitmap = ImageUtils.imageToBitmap(image);
+                image.close();
+                for (Player player : players) {
+                    if (player.count > 0) {
+                        processPlayer(player, bitmap);
                     }
-                    Bitmap bitmap = ImageUtils.imageToBitmap(image);
-                    image.close();
-                    for (Player player : players) {
-                        if (player.count > 0) {
-                            processPlayer(player, bitmap);
-                        }
-                    }
-                    bitmap.recycle();
-                    startScreenShot();
-                });
-            }, time);
+                }
+                bitmap.recycle();
+                startScreenShot();
+            }), time);
         }
     }
 
     private void processPlayer(Player player, Bitmap bitmap) {
         player.processPlayer(bitmap, yolov8ncnn, this);
     }
+
     // 实现回调接口方法
     @Override
-    public void onCardsUpdated(int[] playedCards,int id) {
-        if(id!=0){
+    public void onCardsUpdated(int[] playedCards, int id) {
+        if (id != 0) {
             updateContent(playedCards);
         }
         handleGameRecorder(playedCards, id);
     }
+
     private void handleGameRecorder(int[] playedCards, int actualPlayerId) {
         // 构造出牌内容字符串
         StringBuilder cards = new StringBuilder();
@@ -487,12 +502,12 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         // 更新玩家状态
         if (players[actualPlayerId].count == 0) {
             gameRecorder.setPlayerFinished(actualPlayerId);
-            Log.d("end",Integer.toString(actualPlayerId));
+            Log.d("end", Integer.toString(actualPlayerId));
         }
     }
+
     private void logGameDetails() {
         StringBuilder log = new StringBuilder();
-
 
         for (int i = 0; i < 4; i++) { // 假设有4个玩家
             // 获取玩家i的所有出牌记录
@@ -525,14 +540,12 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             }
         });
     }
+
     private void runOnUiThread(Runnable action) {
         new Handler(Looper.getMainLooper()).post(action);
     }
 
-    /**
-     * 停止或继续截图。
-     * 切换isScreenshotEnabled标志位，并根据状态更新按钮文本。如果重新启用截图，则调用startScreenShot()方法开始截图流程。
-     */
+
     private void stopScreenShot() {
         // 移除所有回调和消息，停止定时任务
         handler.removeCallbacksAndMessages(null);
@@ -547,6 +560,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     public IBinder onBind(Intent intent) {
         return null;
     }
+
     // 在服务销毁时释放所有资源
     @Override
     public void onDestroy() {

@@ -37,7 +37,8 @@ public class Player {
         Bitmap playerBitmap = ImageUtils.cropBitmap(sourceBitmap, this.bounds);
         int[] yoloList = new int[30];
         Arrays.fill(yoloList, 60);
-        yolov8ncnn.recognizeImage(playerBitmap, yoloList, 640);
+        yolov8ncnn.recognizeImage(playerBitmap, yoloList, 320);
+//        ImageUtils.saveBitmap(context, playerBitmap);
         playerBitmap.recycle();
 
         System.arraycopy(hist, 0, hist, 1, hist.length - 1);
@@ -45,6 +46,7 @@ public class Player {
 
         if (System.currentTimeMillis() - time > 2000) {
             handlePlayerState(context);
+
         }
         if (state == 1 && allZeroInHistory()) {
             state = 0;

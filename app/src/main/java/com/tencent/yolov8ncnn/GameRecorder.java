@@ -18,7 +18,7 @@ public class GameRecorder {
     }
 
     public void recordPlay(int actualPlayerId, String cards) {
-        if (firstPlayerId == -1){
+        if (firstPlayerId == -1) {
             firstPlayerId = actualPlayerId; // 设置第一次识别到的玩家为起始玩家
             for (int i = 0; i < 4; i++) {
                 order[i] = (firstPlayerId + i) % 4;
@@ -29,8 +29,9 @@ public class GameRecorder {
     }
 
     private void handleTurn(int actualPlayerId, String cards) {
-        while (order[currentTurnIndex % 4] != actualPlayerId ) {
-            if(!hasFinished[order[currentTurnIndex % 4]]) appendPlayerCards(order[currentTurnIndex % 4], ""); // 空过
+        while (order[currentTurnIndex % 4] != actualPlayerId) {
+            if (!hasFinished[order[currentTurnIndex % 4]])
+                appendPlayerCards(order[currentTurnIndex % 4], ""); // 空过
             currentTurnIndex++;
         }
 
@@ -39,13 +40,11 @@ public class GameRecorder {
     }
 
 
-
     private void appendPlayerCards(int playerId, String cards) {
         String[] newArray = Arrays.copyOf(playerCards[playerId], playerCards[playerId].length + 1);
         newArray[newArray.length - 1] = cards;
         playerCards[playerId] = newArray;
     }
-
 
 
     public void setPlayerFinished(int playerId) {
@@ -62,13 +61,13 @@ public class GameRecorder {
         for (int playIndex = 0; playIndex < currentTurnIndex / 4 + 1; playIndex++) {
             log.append("轮次: ").append(playIndex + 1).append("\n");
             for (int playerId : order) {
-                if(getPlayerCards(playerId).length>playIndex){
+                if (getPlayerCards(playerId).length > playIndex) {
                     String cardsLog = getPlayerCards(playerId)[playIndex];
                     log.append("玩家 ").append(playerId).append(" 出牌内容: ").append(cardsLog).append("\n");
                 }
             }
         }
-        Log.d("log",log.toString());
-        Log.d("count",Integer.toString(currentTurnIndex));
+        Log.d("log", log.toString());
+        Log.d("count", Integer.toString(currentTurnIndex));
     }
 }
