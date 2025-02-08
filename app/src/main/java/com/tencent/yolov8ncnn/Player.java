@@ -27,13 +27,14 @@ public class Player {
         this.bounds = bounds;
         this.name = name;
         this.count = 27;
-        this.hist = new int[3][16];
-        this.last = new int[16];
+        this.hist = new int[3][0];
+        this.last = new int[0];
         this.state = 0;
         this.time = System.currentTimeMillis();
     }
 
     public void processPlayer(Bitmap sourceBitmap, Yolov8Ncnn yolov8ncnn, Context context) {
+
         Bitmap playerBitmap = ImageUtils.cropBitmap(sourceBitmap, this.bounds);
         int[] yoloList = new int[30];
         Arrays.fill(yoloList, 60);
@@ -43,7 +44,7 @@ public class Player {
 
         System.arraycopy(hist, 0, hist, 1, hist.length - 1);
         yoloList=CardUtils.trimArray(yoloList);
-        hist[0] = CardUtils.convertYoloListToPlayerCard(yoloList);
+        hist[0] = yoloList;
 
         if (System.currentTimeMillis() - time > 2000) {
             handlePlayerState(context);
@@ -59,13 +60,13 @@ public class Player {
         if (!CardUtils.isEmpty(current) &&
                 (!Arrays.equals(current, last) || state == 0) &&
                 isNotChangeWithHistory()) {
-
+            Log.d("111","111");
             updateStatus(current, context);
 
         } else if (isNewCardDetected() &&
                 (!Arrays.equals(hist[hist.length - 1], last) ||
                         state == 0)) {
-
+            Log.d("111","222");
             updateStatus(hist[hist.length - 1], context);
         }
     }
@@ -74,14 +75,14 @@ public class Player {
         state = 1;
         time = System.currentTimeMillis();
         last = cards.clone();
-        count -= CardUtils.countCard(cards);
+        count -= cards.length;
 
-        showCardToast(cards, context);
-            if (cardUpdateListener != null) {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    cardUpdateListener.onCardsUpdated(cards,Character.getNumericValue(name.charAt(name.length() - 1)));
-                });
-            }
+        showCard(cards, context);
+//            if (cardUpdateListener != null) {
+//                new Handler(Looper.getMainLooper()).post(() -> {
+//                    cardUpdateListener.onCardsUpdated(cards,Character.getNumericValue(name.charAt(name.length() - 1)));
+//                });
+//            }
     }
 
     private boolean isNewCardDetected() {
@@ -89,8 +90,8 @@ public class Player {
         if (CardUtils.isEmpty(hist[oldest])) return false;
 
         for (int i = 0; i < oldest; i++) {
-            for (int j = 0; j < hist[i].length; j++) {
-                if (hist[oldest][j] < hist[i][j]) return false;
+            if(!CardUtils.isSubset(hist[i],hist[oldest])){
+                return false;
             }
         }
         return true;
@@ -110,16 +111,18 @@ public class Player {
         return true;
     }
 
-    private void showCardToast(int[] playerCard, Context context) {
-        StringBuilder sb = new StringBuilder(name).append(" 出牌: ");
-        for (int i = 1; i < playerCard.length; i++) {
-            if (playerCard[i] != 0) {
-                for (int j = 0; j < playerCard[i]; j++) {
-                    sb.append(CARD_NAMES[i]).append(" ");
-                }
-            }
-        }
-        Log.d("GameLog", sb.toString());
+    private void showCard(int[] playerCard, Context context) {
+        String sb = name + " 出牌: " +
+                CardUtils.analyzeCardType(playerCard) +" "+
+                CardUtils.cardsToString(playerCard);
+//        for (int i = 1; i < playerCard.length; i++) {
+//            if (playerCard[i] != 0) {
+//                for (int j = 0; j < playerCard[i]; j++) {
+//                    sb.append(CARD_NAMES[i]).append(" ");
+//                }
+//            }
+//        }
+        Log.d("GameLog", sb);
 //        new Handler(Looper.getMainLooper()).post(() ->
 //                Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show()
 //        );
@@ -145,7 +148,7 @@ public class Player {
             updateStatus(currentCards, context);
         } else if (count - detectedCardCount < 0 && (last.length  + count - detectedCardCount) == 0) {
             // count减去此次识别到的牌数小于0且加上last的长度等于0，显示出来
-            showCardToast(currentCards, context);
+            showCard(currentCards, context);
             if (cardUpdateListener!= null) {
                 new Handler(Looper.getMainLooper()).post(()  -> {
                     cardUpdateListener.onCardsUpdated(currentCards,  Character.getNumericValue(name.charAt(name.length()  - 1)));

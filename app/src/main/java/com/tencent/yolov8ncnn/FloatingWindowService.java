@@ -462,6 +462,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                 }
                 Bitmap bitmap = ImageUtils.imageToBitmap(image);
                 image.close();
+
                 for (Player player : players) {
                     if (player.count > 0) {
                         processPlayer(player, bitmap);
