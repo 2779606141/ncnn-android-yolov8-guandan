@@ -167,6 +167,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             public void onClick(View v) {
                 if (isScreenshotEnabled) {
                     // 如果当前是“停止”状态，点击后停止截图和识别
+                    lastScreenShot();
                     stopScreenShot();
                     logGameDetails();
                     startButton.setText("开始");
@@ -470,6 +471,23 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                 startScreenShot();
             }), time);
         }
+    }
+    private void lastScreenShot(){
+        executor.execute(()  -> {
+            Image image = mImageReader.acquireLatestImage();
+            if (image == null) {
+                Log.e(TAG, "Image acquisition failed.");
+                return;
+            }
+            Bitmap bitmap = ImageUtils.imageToBitmap(image);
+            image.close();
+            for (Player player : players) {
+                if (player.count  > 0) {
+                    player.lastProcessPlayer(bitmap,yolov8ncnn,this);
+                }
+            }
+            bitmap.recycle();
+        });
     }
 
     private void processPlayer(Player player, Bitmap bitmap) {

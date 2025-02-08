@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 import java.util.Arrays;
 
 public class Player {
@@ -18,6 +17,7 @@ public class Player {
     int[] last;
     int state;
     long time;
+
     private CardUpdateListener cardUpdateListener;
 
     public void setCardUpdateListener(CardUpdateListener listener) {
@@ -42,11 +42,11 @@ public class Player {
         playerBitmap.recycle();
 
         System.arraycopy(hist, 0, hist, 1, hist.length - 1);
+        yoloList=CardUtils.trimArray(yoloList);
         hist[0] = CardUtils.convertYoloListToPlayerCard(yoloList);
 
         if (System.currentTimeMillis() - time > 2000) {
             handlePlayerState(context);
-
         }
         if (state == 1 && allZeroInHistory()) {
             state = 0;
@@ -123,5 +123,34 @@ public class Player {
 //        new Handler(Looper.getMainLooper()).post(() ->
 //                Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show()
 //        );
+    }
+
+    public void lastProcessPlayer(Bitmap sourceBitmap, Yolov8Ncnn yolov8ncnn, Context context) {
+        Bitmap playerBitmap = ImageUtils.cropBitmap(sourceBitmap,  this.bounds);
+        int[] yoloList = new int[30];
+        Arrays.fill(yoloList,  60);
+        yolov8ncnn.recognizeImage(playerBitmap,  yoloList, 320);
+        playerBitmap.recycle();
+
+        int[] currentCards = CardUtils.convertYoloListToPlayerCard(yoloList);
+        if (CardUtils.isEmpty(currentCards))  {
+            // 未识别到目标，不用管
+            return;
+        }
+
+        int detectedCardCount = CardUtils.countCard(currentCards);
+        if (count - detectedCardCount == 0) {
+            // count减去此次识别到的牌数为0，加入记录
+            // 这里假设加入记录的逻辑是将currentCards复制到hist[0]
+            updateStatus(currentCards, context);
+        } else if (count - detectedCardCount < 0 && (last.length  + count - detectedCardCount) == 0) {
+            // count减去此次识别到的牌数小于0且加上last的长度等于0，显示出来
+            showCardToast(currentCards, context);
+            if (cardUpdateListener!= null) {
+                new Handler(Looper.getMainLooper()).post(()  -> {
+                    cardUpdateListener.onCardsUpdated(currentCards,  Character.getNumericValue(name.charAt(name.length()  - 1)));
+                });
+            }
+        }
     }
 }
