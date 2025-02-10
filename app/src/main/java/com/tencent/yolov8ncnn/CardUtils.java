@@ -2,6 +2,7 @@ package com.tencent.yolov8ncnn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 // 扑克牌结构体
@@ -23,7 +24,6 @@ public class CardUtils {
         List<Card> cards = new ArrayList<>();
         // 创建花色映射数组
         final String[] SUIT_NAMES = {"H", "D", "C", "S"};
-
         for (int id : yoloList) {
             if (id < 0) continue;  // 忽略无效ID
             if (id < 52) {
@@ -43,6 +43,7 @@ public class CardUtils {
         }
         return cards.toArray(new  Card[0]);
     }
+
     public static String cardsToString(int[] yoloList) {
         StringBuilder cardString = new StringBuilder();
         // 创建花色映射数组
@@ -59,11 +60,11 @@ public class CardUtils {
             } else if (id == 52) {
                 // 小王
                 if(cardString.length() > 0) cardString.append(" ");
-                cardString.append("BJ"); // 使用"BJ"代表小王
+                cardString.append("RJ"); // 使用"BJ"代表小王
             } else if (id == 53) {
                 // 大王
                 if(cardString.length() > 0) cardString.append(" ");
-                cardString.append("RJ"); // 使用"RJ"代表大王
+                cardString.append("BJ"); // 使用"RJ"代表大王
             }
         }
         return cardString.toString();
@@ -86,7 +87,27 @@ public class CardUtils {
         return resultArray;
     }
     public static String analyzeCardType(int[] yoloList) {
-        return CardTypeUtils.getCardType(convertYoloListToCards(yoloList));
+        return CardTypeUtils.getCardType(convertYoloListToCards(yoloList),convertCardFaceToNumber(GameRecorder.universalCard));
+    }
+    public static int convertCardFaceToNumber(String cardFace) {
+        // 使用 HashMap 存储牌面到数字的映射关系
+        HashMap<String, Integer> cardFaceMap = new HashMap<>();
+        cardFaceMap.put("A", 1);
+        cardFaceMap.put("2", 2);
+        cardFaceMap.put("3", 3);
+        cardFaceMap.put("4", 4);
+        cardFaceMap.put("5", 5);
+        cardFaceMap.put("6", 6);
+        cardFaceMap.put("7", 7);
+        cardFaceMap.put("8", 8);
+        cardFaceMap.put("9", 9);
+        cardFaceMap.put("10", 10);
+        cardFaceMap.put("J", 11);
+        cardFaceMap.put("Q", 12);
+        cardFaceMap.put("K", 13);
+
+        // 转换为大写（或小写）以确保不区分大小写
+        return cardFaceMap.get(cardFace.toUpperCase());
     }
 
 

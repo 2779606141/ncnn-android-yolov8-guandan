@@ -10,11 +10,14 @@ public class GameRecorder {
     private int firstPlayerId = -1; // 第一次识别到的玩家ID
     private int currentTurnIndex = 0; // 当前轮次中的玩家索引
     private int[] order = new int[4];
+    public static String universalCard="";
+
 
     public GameRecorder() {
         for (int i = 0; i < 4; i++) {
             playerCards[i] = new String[0]; // 初始化为空数组
         }
+        universalCard="";
     }
 
     public void recordPlay(int actualPlayerId, String cards) {

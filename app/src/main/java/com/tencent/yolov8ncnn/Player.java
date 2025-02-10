@@ -39,6 +39,7 @@ public class Player {
         int[] yoloList = new int[30];
         Arrays.fill(yoloList, 60);
         yolov8ncnn.recognizeImage(playerBitmap, yoloList, 320);
+
 //        ImageUtils.saveBitmap(context, playerBitmap);
         playerBitmap.recycle();
 
@@ -56,22 +57,19 @@ public class Player {
 
     private void handlePlayerState(Context context) {
         int[] current = hist[0];
-
         if (!CardUtils.isEmpty(current) &&
                 (!Arrays.equals(current, last) || state == 0) &&
                 isNotChangeWithHistory()) {
-            Log.d("111","111");
             updateStatus(current, context);
-
         } else if (isNewCardDetected() &&
                 (!Arrays.equals(hist[hist.length - 1], last) ||
                         state == 0)) {
-            Log.d("111","222");
             updateStatus(hist[hist.length - 1], context);
         }
     }
 
     private void updateStatus(int[] cards, Context context) {
+        if(CardUtils.analyzeCardType(cards).equals("Unknown")) return;
         state = 1;
         time = System.currentTimeMillis();
         last = cards.clone();

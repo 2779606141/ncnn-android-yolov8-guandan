@@ -414,13 +414,15 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             Bitmap bitmap4 = ImageUtils.cropBitmap(bitmap, laizi);
             // 裁剪出感兴趣的手牌区域
             bitmap = ImageUtils.cropBitmap(bitmap, handCard);
-            ImageUtils.saveBitmap(context, bitmap4);
+//            ImageUtils.saveBitmap(context, bitmap4);
+            long startTime = System.currentTimeMillis();
             new OCRHelper().recognizeCharacter(bitmap4, new OCRHelper.OCRCallback() {
                 @Override
                 public void onResult(String character) {
                     // 显示识别结果（例如："A" 或 "5"）
                     runOnUiThread(() -> {
                         Log.d("OCR","识别结果: " + character);
+                        GameRecorder.universalCard=character;
                     });
                 }
                 @Override
@@ -428,6 +430,8 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                     Log.e("OCR", "识别失败: " + error);
                 }
             });
+            long endTime=System.currentTimeMillis();
+            Log.d("time", String.valueOf(endTime-startTime));
             int[] list = new int[100];
             Arrays.fill(list, 60);
             //识别手牌
@@ -469,6 +473,8 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                     }
                 }
                 bitmap.recycle();
+                long endTime=System.currentTimeMillis();
+//                Log.d("time", String.valueOf(endTime-startTime));
                 startScreenShot();
             }), time);
         }
