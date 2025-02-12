@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
-        int time = sharedPreferences.getInt("time", 2000);
+        int time = sharedPreferences.getInt("time", 500);
         EditText editText = findViewById(R.id.editTextNumberSigned);
         editText.setText(String.valueOf(time));
 

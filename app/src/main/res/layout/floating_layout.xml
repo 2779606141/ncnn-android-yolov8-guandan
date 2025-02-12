@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#00000000">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="大王\n2"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/textView15"
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="小王\n2"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:textStyle="bold" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="A\n8"
             android:textStyle="bold" />
         <TextView
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="K\n8"
             android:textStyle="bold" />
 
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="Q\n8"
             android:textStyle="bold" />
 
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="J\n8"
             android:textStyle="bold" />
 
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="10\n8"
             android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="9\n8"
             android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="8\n8"
             android:textStyle="bold" />
 
@@ -93,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="7\n8"
             android:textStyle="bold" />
 
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="6\n8"
             android:textStyle="bold" />
 
@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="5\n8"
             android:textStyle="bold" />
 
@@ -120,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="4\n8"
             android:textStyle="bold" />
 
@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="3\n8"
             android:textStyle="bold" />
         <TextView
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="2\n8"
             android:textStyle="bold" />
 
@@ -147,7 +147,7 @@
             android:layout_height="wrap_content"
             android:minWidth="0dip"
             android:minHeight="0dip"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="开始" />
 
         <Button
@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:minWidth="0dip"
             android:minHeight="0dip"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="隐藏" />
 
         <TextView
@@ -164,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#FFFF00"
+            android:textColor="#000000"
             android:text="拖拽移动"
             android:textStyle="bold" />
 

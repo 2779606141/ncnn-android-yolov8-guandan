@@ -75,12 +75,7 @@ public class Player {
         last = cards.clone();
         count -= cards.length;
 
-        showCard(cards, context);
-//            if (cardUpdateListener != null) {
-//                new Handler(Looper.getMainLooper()).post(() -> {
-//                    cardUpdateListener.onCardsUpdated(cards,Character.getNumericValue(name.charAt(name.length() - 1)));
-//                });
-//            }
+        showCard(cards);
     }
 
     private boolean isNewCardDetected() {
@@ -109,21 +104,16 @@ public class Player {
         return true;
     }
 
-    private void showCard(int[] playerCard, Context context) {
+    private void showCard(int[] playerCard) {
         String sb = name + " 出牌: " +
                 CardUtils.analyzeCardType(playerCard) +" "+
                 CardUtils.cardsToString(playerCard);
-//        for (int i = 1; i < playerCard.length; i++) {
-//            if (playerCard[i] != 0) {
-//                for (int j = 0; j < playerCard[i]; j++) {
-//                    sb.append(CARD_NAMES[i]).append(" ");
-//                }
-//            }
-//        }
         Log.d("GameLog", sb);
-//        new Handler(Looper.getMainLooper()).post(() ->
-//                Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show()
-//        );
+        if (cardUpdateListener != null) {
+            new Handler(Looper.getMainLooper()).post(() -> {
+                cardUpdateListener.onCardsUpdated(CardUtils.cardsToString(playerCard),playerCard,Character.getNumericValue(name.charAt(name.length() - 1)));
+            });
+        }
     }
 
     public void lastProcessPlayer(Bitmap sourceBitmap, Yolov8Ncnn yolov8ncnn, Context context) {
@@ -146,10 +136,10 @@ public class Player {
             updateStatus(currentCards, context);
         } else if (count - detectedCardCount < 0 && (last.length  + count - detectedCardCount) == 0) {
             // count减去此次识别到的牌数小于0且加上last的长度等于0，显示出来
-            showCard(currentCards, context);
+            showCard(currentCards);
             if (cardUpdateListener!= null) {
                 new Handler(Looper.getMainLooper()).post(()  -> {
-                    cardUpdateListener.onCardsUpdated(currentCards,  Character.getNumericValue(name.charAt(name.length()  - 1)));
+//                    cardUpdateListener.onCardsUpdated(CardUtils.cardsToString(playerCard), currentCards,  Character.getNumericValue(name.charAt(name.length()  - 1)));
                 });
             }
         }

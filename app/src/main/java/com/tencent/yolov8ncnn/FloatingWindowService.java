@@ -125,9 +125,9 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         floatWindowLayoutParam.x = 0;
         floatWindowLayoutParam.y = 0;
 
-        // 从SharedPreferences中读取时间配置，默认值为300毫秒
+        // 从SharedPreferences中读取时间配置，默认值为500毫秒
         SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
-        time = sharedPreferences.getInt("time", 300);
+        time = sharedPreferences.getInt("time", 500);
 
         // 将浮动视图添加到WindowManager
         windowManager.addView(floatView, floatWindowLayoutParam);
@@ -198,11 +198,11 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 
         handCardOverlayView = new HandCardOverlayView(this,
                 adjustedPlayers.get(0), adjustedPlayers.get(1),
-                adjustedPlayers.get(2), adjustedPlayers.get(3));
+                adjustedPlayers.get(2), adjustedPlayers.get(3), adjustedPlayers.get(4));
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
+                (int) (mScreenHeight * 0.5f),
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
                         WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY :
                         WindowManager.LayoutParams.TYPE_PHONE,
@@ -210,6 +210,16 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
                         WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
+        // 华为专用窗口类型适配
+        if (Build.MANUFACTURER.equalsIgnoreCase("huawei"))  {
+            params.type  = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        } else {
+            params.type  = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY :
+                    WindowManager.LayoutParams.TYPE_PHONE;
+        }
+        params.gravity = Gravity.TOP;
+        params.alpha = 0.8f;
 
         windowManager.addView(handCardOverlayView, params);
     }
@@ -233,7 +243,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             }
             int leftPadding = displayCutout != null ? displayCutout.getSafeInsetLeft() : 0;
 
-            for (int[] player : new int[][]{player0, player1, player2, player3}) {
+            for (int[] player : new int[][]{player0, player1, player2, player3,laizi}) {
                 int[] adjustedPlayer = Arrays.copyOf(player, player.length); // 复制数组
                 adjustedPlayer[0] -= leftPadding; // 左x坐标
                 adjustedPlayer[2] -= leftPadding; // 右x坐标
@@ -241,7 +251,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             }
         } else {
             // 对于不支持DisplayCutout API版本，直接添加原始坐标
-            for (int[] player : new int[][]{player0, player1, player2, player3}) {
+            for (int[] player : new int[][]{player0, player1, player2, player3,laizi}) {
                 int[] adjustedPlayer = Arrays.copyOf(player, player.length); // 复制数组
                 adjustedPlayers.add(adjustedPlayer);
             }
@@ -503,10 +513,11 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 
     // 实现回调接口方法
     @Override
-    public void onCardsUpdated(int[] playedCards, int id) {
-        if (id != 0) {
-            updateContent(playedCards);
-        }
+    public void onCardsUpdated(String s, int[] playedCards, int id) {
+//        if (id != 0) {
+//            updateContent(playedCards);
+//        }
+        handCardOverlayView.updatePlayerText(id,s);
         handleGameRecorder(playedCards, id);
     }
 

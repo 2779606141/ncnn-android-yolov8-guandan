@@ -106,8 +106,23 @@ public class CardUtils {
         cardFaceMap.put("Q", 12);
         cardFaceMap.put("K", 13);
 
-        // 转换为大写（或小写）以确保不区分大小写
-        return cardFaceMap.get(cardFace.toUpperCase());
+        // 检查输入是否为 null 或空字符串
+        if (cardFace == null || cardFace.isEmpty()) {
+//            throw new IllegalArgumentException("Card face cannot be null or empty");
+            return 1;
+        }
+
+
+        // 转换为大写并查找映射值
+        String normalizedCardFace = cardFace.toUpperCase();
+        Integer number = cardFaceMap.get(normalizedCardFace);
+
+        // 如果找不到对应的牌面，抛出异常或返回默认值
+        if (number == null) {
+            throw new IllegalArgumentException("Invalid card face: " + cardFace);
+        }
+
+        return number;
     }
 
 
