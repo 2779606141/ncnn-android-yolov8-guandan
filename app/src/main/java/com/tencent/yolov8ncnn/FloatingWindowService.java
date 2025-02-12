@@ -34,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -51,15 +52,20 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     private int[] player3 = {330, 340, 900, 530};
     private int[] player2 = {1300, 200, 1800, 360};
     private int[] player0 = {1300, 420, 1800, 600};
-    private int[] laizi = {300, 70, 360, 150};
+    private int[] laizi = {290, 70, 370, 150};
     private float ratio; // 适配不同屏幕大小，需要缩放或扩大的比例
     private Yolov8Ncnn yolov8ncnn; // YOLOv8模型实例
     private int time;
     private GameRecorder gameRecorder;
-    private HandCardOverlayView handCardOverlayView;
+    private boolean isTouchable=false;
+    private int leftPadding = 0;
+
 
     // 类成员变量
     private Player[] players;
+
+    private List<HandCardOverlayView> overlayViews = new ArrayList<>();
+
 
     @Override
     public void onCreate() {
@@ -95,16 +101,10 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 
         // 计算比例因子，用于调整UI元素大小
         ratio = mScreenHeight / 3200f;
-
-        // 根据比例因子调整手牌和玩家相关数据
-        for (int i = 0; i < handCard.length; i++) {
-            handCard[i] = (int) (handCard[i] * ratio);
-            player1[i] = (int) (player1[i] * ratio);
-            player2[i] = (int) (player2[i] * ratio);
-            player3[i] = (int) (player3[i] * ratio);
-            player0[i] = (int) (player0[i] * ratio);
-            laizi[i] = (int) (laizi[i] * ratio);
+        for(int i=0;i<4;i++){
+            handCard[i]=(int)(handCard[i]*ratio);
         }
+        loadPlayerPositions();
 
         // 获取LayoutInflater服务，用于加载布局文件
         LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -183,78 +183,219 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         });
 
         // 设置停止按钮的点击事件
-        Button stopButton = floatView.findViewById(R.id.stopButton);
-        stopButton.setOnClickListener(new View.OnClickListener() {
+        Button setButton = floatView.findViewById(R.id.stopButton);
+        setButton.setText("移位");
+
+        setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopScreenShot();
+                if(isTouchable){
+                    updatePlayerPositions();
+                    setButton.setText("移位");
+                    isTouchable=false;
+                    setAllWindowsTouchable(isTouchable);
+                }else{
+                    setButton.setText("保存");
+                    isTouchable=true;
+                    setAllWindowsTouchable(isTouchable);
+
+                }
+
             }
         });
+
     }
-
-    private void showHandCardOverlay() {
-        // 获取调整后的玩家坐标
-        List<int[]> adjustedPlayers = getAdjustedPlayerCoordinates();
-
-        handCardOverlayView = new HandCardOverlayView(this,
-                adjustedPlayers.get(0), adjustedPlayers.get(1),
-                adjustedPlayers.get(2), adjustedPlayers.get(3), adjustedPlayers.get(4));
-
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                (int) (mScreenHeight * 0.5f),
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
-                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY :
-                        WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE |
-                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-                PixelFormat.TRANSLUCENT);
-        // 华为专用窗口类型适配
-        if (Build.MANUFACTURER.equalsIgnoreCase("huawei"))  {
-            params.type  = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-        } else {
-            params.type  = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY :
-                    WindowManager.LayoutParams.TYPE_PHONE;
-        }
-        params.gravity = Gravity.TOP;
-        params.alpha = 0.8f;
-
-        windowManager.addView(handCardOverlayView, params);
-    }
-
-    private void removeHandCardOverlay() {
-        if (handCardOverlayView != null && handCardOverlayView.getParent() != null) {
-            windowManager.removeView(handCardOverlayView);
-            handCardOverlayView = null;
-        }
-    }
-
-    private List<int[]> getAdjustedPlayerCoordinates() {
-        List<int[]> adjustedPlayers = new ArrayList<>();
+    private void calculateLeftPadding() {
         Display display = windowManager.getDefaultDisplay();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) { // 确保API级别支持
-            // 获取DisplayCutout对象
             DisplayCutout displayCutout = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                 displayCutout = display.getCutout();
             }
-            int leftPadding = displayCutout != null ? displayCutout.getSafeInsetLeft() : 0;
-
-            for (int[] player : new int[][]{player0, player1, player2, player3,laizi}) {
-                int[] adjustedPlayer = Arrays.copyOf(player, player.length); // 复制数组
-                adjustedPlayer[0] -= leftPadding; // 左x坐标
-                adjustedPlayer[2] -= leftPadding; // 右x坐标
-                adjustedPlayers.add(adjustedPlayer);
-            }
+            leftPadding = displayCutout != null ? displayCutout.getSafeInsetLeft() : 0;
         } else {
-            // 对于不支持DisplayCutout API版本，直接添加原始坐标
-            for (int[] player : new int[][]{player0, player1, player2, player3,laizi}) {
-                int[] adjustedPlayer = Arrays.copyOf(player, player.length); // 复制数组
-                adjustedPlayers.add(adjustedPlayer);
+            leftPadding = 0; // 对于不支持 DisplayCutout 的设备，默认为 0
+        }
+    }
+    private void savePlayerPositions() {
+        SharedPreferences prefs = getSharedPreferences("PlayerPositions", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        // 保存所有玩家区域坐标
+        saveIntArray(editor, "player0", player0);
+        saveIntArray(editor, "player1", player1);
+        saveIntArray(editor, "player2", player2);
+        saveIntArray(editor, "player3", player3);
+        saveIntArray(editor, "laizi", laizi);
+
+        editor.apply();
+    }
+
+    private void loadPlayerPositions() {
+        SharedPreferences prefs = getSharedPreferences("PlayerPositions", MODE_PRIVATE);
+
+        // 加载时使用默认值（原始比例计算值）
+        player0 = loadIntArray(prefs, "player0", new int[]{1300, 420, 1800, 600});
+        player1 = loadIntArray(prefs, "player1", new int[]{2100, 320, 2750, 520});
+        player2 = loadIntArray(prefs, "player2", new int[]{1300, 200, 1800, 360});
+        player3 = loadIntArray(prefs, "player3", new int[]{330, 340, 900, 530});
+        laizi = loadIntArray(prefs, "laizi", new int[]{290, 70, 370, 150});
+    }
+
+    // 辅助方法：保存int数组
+    private void saveIntArray(SharedPreferences.Editor editor, String key, int[] array) {
+        for (int i = 0; i < array.length;  i++) {
+            editor.putInt(key  + "_" + i, array[i]);
+        }
+    }
+
+    // 辅助方法：加载int数组（带屏幕适配）
+    private int[] loadIntArray(SharedPreferences prefs, String key, int[] defaultValues) {
+        int[] result = new int[defaultValues.length];
+        for (int i = 0; i < defaultValues.length;  i++) {
+            // 默认值需要根据当前屏幕比例计算
+            int defaultValue = (int)(defaultValues[i] * ratio);
+            result[i] = prefs.getInt(key  + "_" + i, defaultValue);
+        }
+        return result;
+    }
+    private void updatePlayerPositions() {
+        for (int i = 0; i < overlayViews.size(); i++) {
+            HandCardOverlayView view = overlayViews.get(i);
+            WindowManager.LayoutParams params = (WindowManager.LayoutParams) view.getLayoutParams();
+            int x = params.x + leftPadding; // 调整x坐标，加上leftPadding
+            int y = params.y;
+
+            int[] targetArray;
+            if (i < 4) {
+                switch (i) {
+                    case 0:
+                        targetArray = player0;
+                        break;
+                    case 1:
+                        targetArray = player1;
+                        break;
+                    case 2:
+                        targetArray = player2;
+                        break;
+                    case 3:
+                        targetArray = player3;
+                        break;
+                    default:
+                        continue; // 不可能的情况
+                }
+            } else {
+                targetArray = laizi;
             }
+
+            // 计算位置变化量
+            int deltaX = x - targetArray[0];
+            int deltaY = y - targetArray[1];
+
+            // 更新数组中的坐标
+            targetArray[0] = x; // 设置新的左上角x
+            targetArray[1] = y; // 设置新的左上角y
+            targetArray[2] += deltaX; // 调整右下角x
+            targetArray[3] += deltaY; // 调整右下角y
+        }
+        savePlayerPositions();
+    }
+
+
+    private void showHandCardOverlay() {
+        List<int[]> initialCoordinates = getAdjustedPlayerCoordinates(); // 获取初始坐标数据
+        for (int i = 0; i < initialCoordinates.size();  i++) {
+            int[] rect = initialCoordinates.get(i);
+            HandCardOverlayView view = new HandCardOverlayView(this, i, "Player " + (i));
+
+            WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                    rect[2] - rect[0]+30,
+                    rect[3] - rect[1]+60,
+                    getWindowType(),
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS |
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    PixelFormat.TRANSLUCENT);
+
+            params.x = rect[0];
+            params.y = rect[1];
+            params.gravity  = Gravity.START | Gravity.TOP;
+
+            windowManager.addView(view,  params);
+            overlayViews.add(view);
+        }
+    }
+
+    private int getWindowType() {
+        if (Build.MANUFACTURER.equalsIgnoreCase("huawei"))  {
+            return WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        }
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY :
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+    }
+
+
+    public void setAllWindowsTouchable(boolean touchable) {
+        for (HandCardOverlayView view : overlayViews) {
+            updateWindowTouchFlag(view, touchable);
+        }
+    }
+
+    private void updateWindowTouchFlag(View view, boolean touchable) {
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) view.getLayoutParams();
+
+        // 使用位运算保持原有flags
+        if (touchable) {
+            // 移除不可触摸标志（按位非运算）
+            params.flags  &= ~WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        } else {
+            // 保留原有flags并添加不可触摸标志（按位或运算）
+            params.flags  |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        }
+
+        try {
+            windowManager.updateViewLayout(view,  params);
+        } catch (IllegalArgumentException e) {
+            Log.e("OverlayService", "View not attached to window manager");
+        }
+    }
+
+    private void removeHandCardOverlay() {
+        // 双重校验保证线程安全
+        if (windowManager == null || overlayViews == null) return;
+
+        // 使用迭代器避免ConcurrentModificationException
+        Iterator<HandCardOverlayView> iterator = overlayViews.iterator();
+        while (iterator.hasNext())  {
+            HandCardOverlayView view = iterator.next();
+            try {
+                // 在主线程执行移除操作
+                new Handler(Looper.getMainLooper()).post(()  -> {
+                    try {
+                        if (view.isAttachedToWindow())  {
+                            windowManager.removeView(view);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        Log.w("OverlayService", "View already removed: " + view);
+                    }
+                });
+            } finally {
+                iterator.remove();  // 确保从列表中移除引用
+            }
+        }
+
+        // 强制垃圾回收（可选）
+        System.gc();
+    }
+    private List<int[]> getAdjustedPlayerCoordinates() {
+        List<int[]> adjustedPlayers = new ArrayList<>();
+
+        for (int[] player : new int[][]{player0, player1, player2, player3, laizi}) {
+            int[] adjustedPlayer = Arrays.copyOf(player, player.length); // 复制数组
+            adjustedPlayer[0] -= leftPadding; // 左x坐标
+            adjustedPlayer[2] -= leftPadding; // 右x坐标
+            adjustedPlayers.add(adjustedPlayer);
         }
 
         return adjustedPlayers;
@@ -338,6 +479,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             // 如果是横屏，启用开始按钮
             startButton.setEnabled(true);
             startButton.setText("开始");
+            calculateLeftPadding();
             showHandCardOverlay();
         }
 
@@ -395,10 +537,6 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         // 移除所有之前的消息和回调，确保只运行最新的任务
         handler.removeCallbacksAndMessages(null);
 
-        // 查找浮动视图中的"停止"按钮，并设置其文本
-        TextView textView1 = floatView.findViewById(getResources().getIdentifier("stopButton", "id", getPackageName()));
-        textView1.setText("停止");
-
         // 初始化玩家手牌计数数组，默认每种牌8张，王牌2张
         cardCounts = new int[16];
         Arrays.fill(cardCounts, 8);
@@ -433,6 +571,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                     runOnUiThread(() -> {
                         Log.d("OCR","识别结果: " + character);
                         GameRecorder.universalCard=character;
+                        overlayViews.get(4).updateText(character);
                     });
                 }
                 @Override
@@ -479,6 +618,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 
                 for (Player player : players) {
                     if (player.count > 0) {
+
                         processPlayer(player, bitmap);
                     }
                 }
@@ -517,7 +657,8 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 //        if (id != 0) {
 //            updateContent(playedCards);
 //        }
-        handCardOverlayView.updatePlayerText(id,s);
+//        handCardOverlayView.updatePlayerText(id,s);
+        overlayViews.get(id).updateText(s);
         handleGameRecorder(playedCards, id);
     }
 

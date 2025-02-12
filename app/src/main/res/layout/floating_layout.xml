@@ -157,7 +157,7 @@
             android:minWidth="0dip"
             android:minHeight="0dip"
             android:textColor="#000000"
-            android:text="隐藏" />
+            android:text="移位" />
 
         <TextView
             android:id="@+id/textView"
