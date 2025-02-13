@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.Image;
@@ -32,6 +33,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -59,6 +62,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     private GameRecorder gameRecorder;
     private boolean isTouchable=false;
     private int leftPadding = 0;
+    private int topPadding = 0;
 
 
     // 类成员变量
@@ -89,16 +93,23 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         // 创建DisplayMetrics对象，用于获取屏幕尺寸和密度信息
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);
+        Display display = windowManager.getDefaultDisplay();
 
         // 获取屏幕密度
         mScreenDensity = metrics.densityDpi;
+        Point size = new Point();
+        display.getRealSize(size);
+
+        int screenWidth = metrics.widthPixels;
+        Log.d("width", String.valueOf(size.x));
+
 
         // 获取屏幕宽度（像素）
-        mScreenWidth = metrics.widthPixels;
+        mScreenWidth = size.x;
 
         // 获取屏幕高度（考虑虚拟按键的高度）
-        mScreenHeight = ImageUtils.getHasVirtualKey(windowManager);
-
+//        mScreenHeight = ImageUtils.getHasVirtualKey(windowManager);
+        mScreenHeight=size.y;
         // 计算比例因子，用于调整UI元素大小
         ratio = mScreenHeight / 3200f;
         for(int i=0;i<4;i++){
@@ -213,9 +224,14 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                 displayCutout = display.getCutout();
             }
             leftPadding = displayCutout != null ? displayCutout.getSafeInsetLeft() : 0;
+            topPadding = displayCutout != null ? displayCutout.getSafeInsetTop() : 0;
         } else {
             leftPadding = 0; // 对于不支持 DisplayCutout 的设备，默认为 0
+            topPadding = 0;
         }
+
+        Log.d("left", String.valueOf(leftPadding));
+        Log.d("top", String.valueOf(topPadding));
     }
     private void savePlayerPositions() {
         SharedPreferences prefs = getSharedPreferences("PlayerPositions", MODE_PRIVATE);
@@ -264,7 +280,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             HandCardOverlayView view = overlayViews.get(i);
             WindowManager.LayoutParams params = (WindowManager.LayoutParams) view.getLayoutParams();
             int x = params.x + leftPadding; // 调整x坐标，加上leftPadding
-            int y = params.y;
+            int y = params.y+ topPadding;
 
             int[] targetArray;
             if (i < 4) {
@@ -296,11 +312,10 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             targetArray[0] = x; // 设置新的左上角x
             targetArray[1] = y; // 设置新的左上角y
             targetArray[2] += deltaX; // 调整右下角x
-            targetArray[3] += deltaY; // 调整右下角y
+            targetArray[3] += deltaY; //
         }
         savePlayerPositions();
     }
-
 
     private void showHandCardOverlay() {
         List<int[]> initialCoordinates = getAdjustedPlayerCoordinates(); // 获取初始坐标数据
@@ -313,7 +328,6 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                     rect[3] - rect[1]+60,
                     getWindowType(),
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS |
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     PixelFormat.TRANSLUCENT);
 
@@ -327,9 +341,9 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     }
 
     private int getWindowType() {
-        if (Build.MANUFACTURER.equalsIgnoreCase("huawei"))  {
-            return WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-        }
+//        if (Build.MANUFACTURER.equalsIgnoreCase("huawei"))  {
+//            return WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+//        }
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY :
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
@@ -390,9 +404,14 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     }
     private List<int[]> getAdjustedPlayerCoordinates() {
         List<int[]> adjustedPlayers = new ArrayList<>();
+//        if (Build.MANUFACTURER.equalsIgnoreCase("HUAWEI"))  {
+//            // 应用华为专用偏移补偿值
+//            topPadding = 26;
+//        }
 
         for (int[] player : new int[][]{player0, player1, player2, player3, laizi}) {
             int[] adjustedPlayer = Arrays.copyOf(player, player.length); // 复制数组
+            Log.d("left", String.valueOf(leftPadding));
             adjustedPlayer[0] -= leftPadding; // 左x坐标
             adjustedPlayer[2] -= leftPadding; // 右x坐标
             adjustedPlayers.add(adjustedPlayer);

@@ -34,7 +34,7 @@ public class Player {
     }
 
     public void processPlayer(Bitmap sourceBitmap, Yolov8Ncnn yolov8ncnn, Context context) {
-
+//        ImageUtils.saveBitmap(context, sourceBitmap);
         Bitmap playerBitmap = ImageUtils.cropBitmap(sourceBitmap, this.bounds);
         int[] yoloList = new int[30];
         Arrays.fill(yoloList, 60);

@@ -59,6 +59,7 @@ public class GameRecorder {
     }
 
 
+
     public void generateLog() {
         StringBuilder log = new StringBuilder();
         for (int playIndex = 0; playIndex < currentTurnIndex / 4 + 1; playIndex++) {
