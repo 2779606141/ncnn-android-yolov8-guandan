@@ -1,6 +1,5 @@
 package com.tencent.yolov8ncnn;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;

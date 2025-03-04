@@ -15,6 +15,7 @@
     <uses-permission android:name="com.huawei.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application android:label="@string/app_name"
+        android:name=".MyApp"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">>
         <activity android:name="MainActivity"
             android:label="@string/app_name"

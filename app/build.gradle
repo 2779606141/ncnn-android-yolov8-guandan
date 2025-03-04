@@ -20,6 +20,10 @@ android {
     }
 
     dependencies {
+        def room_version = "2.6.1"
+        implementation "androidx.room:room-runtime:$room_version"
+        annotationProcessor "androidx.room:room-compiler:$room_version"
+        implementation 'com.google.code.gson:gson:2.10.1' // 用于复杂类型转换
         implementation 'com.android.support:support-v4:24.0.0'
         implementation 'androidx.appcompat:appcompat:1.6.1'
         implementation 'com.google.android.material:material:1.9.0'
