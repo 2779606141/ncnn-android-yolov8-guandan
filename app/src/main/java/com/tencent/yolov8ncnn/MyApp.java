@@ -11,9 +11,8 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        database = Room.databaseBuilder(this,
-                        AppDatabase.class, "game-db")
-                .fallbackToDestructiveMigration() // 处理版本迁移
+        database = Room.databaseBuilder(this, AppDatabase.class, "game-db")
+                .fallbackToDestructiveMigration()
                 .build();
     }
 

@@ -111,37 +111,31 @@ public class Player {
         Log.d("GameLog", sb);
         if (cardUpdateListener != null) {
             new Handler(Looper.getMainLooper()).post(() -> {
-                cardUpdateListener.onCardsUpdated(CardUtils.cardsToString(playerCard),playerCard,Character.getNumericValue(name.charAt(name.length() - 1)));
+                cardUpdateListener.onCardsUpdated(CardUtils.analyzeCardType(playerCard),CardUtils.cardsToString(playerCard),playerCard,Character.getNumericValue(name.charAt(name.length() - 1)));
             });
         }
     }
-
-    public void lastProcessPlayer(Bitmap sourceBitmap, Yolov8Ncnn yolov8ncnn, Context context) {
-        Bitmap playerBitmap = ImageUtils.cropBitmap(sourceBitmap,  this.bounds);
+    public String processFinalCards(Bitmap sourceBitmap, Yolov8Ncnn yolov8ncnn, Context context) {
+        // 裁剪图像并识别牌面（与 processPlayer 相同）
+        Bitmap playerBitmap = ImageUtils.cropBitmap(sourceBitmap, this.bounds);
         int[] yoloList = new int[30];
-        Arrays.fill(yoloList,  60);
-        yolov8ncnn.recognizeImage(playerBitmap,  yoloList, 320);
+        Arrays.fill(yoloList, 60);
+        yolov8ncnn.recognizeImage(playerBitmap, yoloList, 320);
         playerBitmap.recycle();
 
-        int[] currentCards = CardUtils.convertYoloListToPlayerCard(yoloList);
-        if (CardUtils.isEmpty(currentCards))  {
-            // 未识别到目标，不用管
-            return;
-        }
+        // 清理识别结果并更新历史记录（保留部分逻辑）
+        yoloList = CardUtils.trimArray(yoloList);
 
-        int detectedCardCount = CardUtils.countCard(currentCards);
-        if (count - detectedCardCount == 0) {
-            // count减去此次识别到的牌数为0，加入记录
-            // 这里假设加入记录的逻辑是将currentCards复制到hist[0]
-            updateStatus(currentCards, context);
-        } else if (count - detectedCardCount < 0 && (last.length  + count - detectedCardCount) == 0) {
-            // count减去此次识别到的牌数小于0且加上last的长度等于0，显示出来
-            showCard(currentCards);
-            if (cardUpdateListener!= null) {
-                new Handler(Looper.getMainLooper()).post(()  -> {
-//                    cardUpdateListener.onCardsUpdated(CardUtils.cardsToString(playerCard), currentCards,  Character.getNumericValue(name.charAt(name.length()  - 1)));
-                });
+        // 核心逻辑：对比 last 并检查 count 是否归零
+        if (!Arrays.equals(yoloList, last)) {
+            count -= yoloList.length;
+            if (count == 0) {
+                // 更新状态并触发回调
+                last = yoloList.clone();
+                return CardUtils.cardsToString(yoloList);
             }
         }
+        return null;
     }
+
 }

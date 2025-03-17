@@ -65,6 +65,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     private boolean isGameInProgress = false;
     private Handler autoStartHandler = new Handler();
     private Runnable autoStartRunnable;
+    private boolean hasBegin = false;
 
 
     // 类成员变量
@@ -173,11 +174,14 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                     // 如果当前是“停止”状态，点击后停止截图和识别
                     stopScreenShot();
                     logGameDetails();
+                    gameRecorder.saveGameRecord();
                     isGameInProgress = false;
                     setupAutoStartDetection();
                     startButton.setText("开始");
                 } else {
                     // 如果当前是“开始”状态，点击后启动截图和识别
+                    isGameInProgress = true;
+                    autoStartHandler.removeCallbacks(autoStartRunnable);
                     createImageReader();
                     virtualDisplay();
                     initScreenShot();
@@ -583,7 +587,8 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                 @Override
                 public void onError(String error) {
                     Log.e("OCR", "识别失败: " + error);
-                    ImageUtils.saveBitmap(context, bitmap4);
+                    GameRecorder.universalCard="Q";
+                    overlayViews.get(4).updateText("Q");
                 }
             });
             long endTime=System.currentTimeMillis();
@@ -643,18 +648,18 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 
     // 实现回调接口方法
     @Override
-    public void onCardsUpdated(String s, int[] playedCards, int id) {
+    public void onCardsUpdated(String type,String s, int[] playedCards, int id) {
 //        if (id != 0) {
 //            updateContent(playedCards);
 //        }
         overlayViews.get(id).updateText(s);
-        handleGameRecorder(s, id);
+        handleGameRecorder(type,s, id);
     }
 
-    private void handleGameRecorder(String s, int actualPlayerId) {
+    private void handleGameRecorder(String type,String s, int actualPlayerId) {
         // 记录出牌
         if (!s.isEmpty()) {
-            gameRecorder.recordPlay(actualPlayerId, s);
+            gameRecorder.recordPlay(actualPlayerId, type,s);
         }
         // 更新玩家状态
         if (players[actualPlayerId].count == 0) {
@@ -662,6 +667,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             Log.d("end", Integer.toString(actualPlayerId));
             if(gameRecorder.isGameEnded()){
                 gameRecorder.saveGameRecord();
+                hasBegin=true;
                 Button startButton = floatView.findViewById(R.id.startButton);
                 startButton.post(startButton::performClick);
             }
@@ -722,6 +728,15 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         executor.execute(() -> {
             Image image = mImageReader.acquireLatestImage();
             Bitmap bitmap = ImageUtils.imageToBitmap(image);
+            if(hasBegin){
+                for (Player player : players) {
+                    if (player.count > 0) {
+                        gameRecorder.updateRemainingCards(Integer.parseInt(player.name),player.processFinalCards(bitmap, yolov8ncnn, this));
+                        Log.d("remain:",player.name+player.processFinalCards(bitmap, yolov8ncnn, this));
+                        gameRecorder.setPlayerFinished(Integer.parseInt(player.name));
+                    }
+                }
+            }
             Bitmap handBitmap = ImageUtils.cropBitmap(bitmap, handCard);
 
             // 使用YOLO模型检测手牌数量
