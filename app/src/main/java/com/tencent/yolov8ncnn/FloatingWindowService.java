@@ -733,6 +733,9 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                     if (player.count > 0) {
                         gameRecorder.updateRemainingCards(Integer.parseInt(player.name),player.processFinalCards(bitmap, yolov8ncnn, this));
                         Log.d("remain:",player.name+player.processFinalCards(bitmap, yolov8ncnn, this));
+                        runOnUiThread(() -> {
+                            Toast.makeText(context, "玩家 " + player.name + " 剩余牌处理完成", Toast.LENGTH_SHORT).show();
+                        });
                         gameRecorder.setPlayerFinished(Integer.parseInt(player.name));
                     }
                 }

@@ -1,116 +1,28 @@
 package com.tencent.yolov8ncnn;
 
-import static android.content.ContentValues.TAG;
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.projection.MediaProjectionManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-
-
-import java.util.Objects;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
-    private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!checkOverlayDisplayPermission()) requestOverlayDisplayPermission();
-        Button initButton = findViewById(R.id.init);
-        initButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initMediaProjectionManager();
-            }
-        });
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
-        int time = sharedPreferences.getInt("time", 500);
-        EditText editText = findViewById(R.id.editTextNumberSigned);
-        editText.setText(String.valueOf(time));
+        // 设置导航宿主
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
 
-        Button save = findViewById(R.id.button);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                EditText editText = findViewById(R.id.editTextNumberSigned);
-                Integer time = Integer.valueOf(editText.getText().toString());
-                editor.putInt("time",time);
-                editor.apply();  // 提交保存
-                Toast.makeText(MainActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void requestOverlayDisplayPermission() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle("需要打开悬浮窗权限");
-        builder.setMessage("在系统设置中为本应用打开悬浮窗权限,或允许该应用显示在其他应用上层。");
-        builder.setPositiveButton("打开设置", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, RESULT_OK);
-            }
-        });
-        dialog = builder.create();
-        dialog.show();
-    }
-
-    /**
-     * 检查是否已经打开悬浮窗权限
-     * @return
-     */
-    private boolean checkOverlayDisplayPermission() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return true;
-        }
-    }
-    MediaProjectionManager mediaProjectionManager;
-    public static final int REQUEST_MEDIA_PROJECTION = 18;
-
-    private void initMediaProjectionManager() {
-        if (mediaProjectionManager != null) return;
-        mediaProjectionManager = (MediaProjectionManager)getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-        startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null) {
-            Intent intent = new Intent(MainActivity.this, FloatingWindowService.class);
-            intent.putExtra("code", resultCode);
-            intent.putExtra("data", data);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent);
-            } else {
-                startService(intent);
-            }
-            finish();
-        }
+        // 设置导航栏（可选）
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder()
+                .build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
     }
 }
