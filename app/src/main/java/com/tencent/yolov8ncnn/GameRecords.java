@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class GameRecords implements Serializable {
     private Integer id;
-    private Integer userId;
+
     private String player0Card;
     private String player1Card;
     private String player2Card;
@@ -39,13 +39,6 @@ public class GameRecords implements Serializable {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public String getPlayer0Card() {
         return player0Card;
@@ -132,7 +125,7 @@ public class GameRecords implements Serializable {
     public String toString() {
         return "GameRecord{" +
                 "id=" + id +
-                ", userId=" + userId +
+
                 ", player0Card='" + player0Card + '\'' +
                 ", player1Card='" + player1Card + '\'' +
                 ", player2Card='" + player2Card + '\'' +

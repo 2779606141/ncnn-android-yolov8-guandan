@@ -43,8 +43,8 @@ public class LoginFragment extends Fragment {
                 String password = passwordEditText.getText().toString().trim();
 
                 User user = new User(username, password, (byte) 0);
-//                sendLoginRequest(user);
-                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_mainFragment);
+                sendLoginRequest(user);
+//                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_mainFragment);
             }
         });
 
@@ -54,7 +54,7 @@ public class LoginFragment extends Fragment {
     private void sendLoginRequest(User user) {
         if (!isAdded()) return; // 确保Fragment已附加
 
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getClient(getContext()).create(ApiService.class);
         Call<Map<String, Object>> call = apiService.login(user);
 
         call.enqueue(new Callback<Map<String, Object>>() {

@@ -11,7 +11,7 @@ public class Player {
     private static final String[] CARD_NAMES = {" ", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "大王", "小王"};
 
     final int[] bounds;
-    final String name;
+    final int id;  // 修改为int类型
     int count;
     final int[][] hist;
     int[] last;
@@ -23,9 +23,9 @@ public class Player {
     public void setCardUpdateListener(CardUpdateListener listener) {
         this.cardUpdateListener = listener;
     }
-    public Player(int[] bounds, String name) {
+    public Player(int[] bounds, int id) {  // 修改构造函数参数
         this.bounds = bounds;
-        this.name = name;
+        this.id = id;
         this.count = 27;
         this.hist = new int[3][0];
         this.last = new int[0];
@@ -105,13 +105,13 @@ public class Player {
     }
 
     private void showCard(int[] playerCard) {
-        String sb = name + " 出牌: " +
+        String sb = "玩家" + id + " 出牌: " +  // 修改显示格式
                 CardUtils.analyzeCardType(playerCard) +" "+
                 CardUtils.cardsToString(playerCard);
         Log.d("GameLog", sb);
         if (cardUpdateListener != null) {
             new Handler(Looper.getMainLooper()).post(() -> {
-                cardUpdateListener.onCardsUpdated(CardUtils.analyzeCardType(playerCard),CardUtils.cardsToString(playerCard),playerCard,Character.getNumericValue(name.charAt(name.length() - 1)));
+                cardUpdateListener.onCardsUpdated(CardUtils.analyzeCardType(playerCard),CardUtils.cardsToString(playerCard),playerCard,id);  // 直接使用id
             });
         }
     }

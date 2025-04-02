@@ -9,9 +9,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface ApiService {
-    @POST("/BookManager/game/save")
+    @POST("/GuanDanManager/game/save")
     Call<ResponseBody> createGameRecord(@Body GameRecords gameRecord);
 
-    @POST("/BookManager/user/login")
+    @POST("/GuanDanManager/user/login")
     Call<Map<String, Object>> login(@Body User user);
 }

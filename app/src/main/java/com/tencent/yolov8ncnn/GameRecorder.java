@@ -1,5 +1,6 @@
 package com.tencent.yolov8ncnn;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -27,9 +28,11 @@ public class GameRecorder {
     private static final int PLAYER_COUNT = 4;
     private final int[] finishOrder = new int[PLAYER_COUNT];
     private int finishIndex = 0;
+    private final Context context;  // 新增Context成员
 
 
-    public GameRecorder() {
+    public GameRecorder(Context context) {  // 修改构造函数
+        this.context = context.getApplicationContext();
         for (int i = 0; i < PLAYER_COUNT; i++) {
             playerCards.add(new ArrayList<>()); // 初始化每个玩家的出牌列表
             remainingCards.add(new ArrayList<>()); // 初始化每个玩家的剩余手牌
@@ -137,7 +140,6 @@ public class GameRecorder {
                 record.setTotalRounds(currentTurn);
                 record.setIsComplete(isGameEnded());
                 record.setWin(finishOrder[0]==0||finishOrder[0]==2);
-                record.setUserId(1);
                 // 假设当前游戏数据状态
 //                List<List<List<String>>> playerCards = new ArrayList<>();
 //                playerCards.add(Arrays.asList(
@@ -174,7 +176,6 @@ public class GameRecorder {
 //                record.setGameTime(new Date());                        // 当前时间
 //                record.setTotalRounds(currentTurn);                    // 7
 //                record.setIsComplete(true);
-//                record.setUserId(1);
 //                record.setWin(finishOrder[0]==0||finishOrder[0]==2);
                 // 发送网络请求
                 sendToBackend(record);
@@ -184,7 +185,7 @@ public class GameRecorder {
         }).start();
     }
     private void sendToBackend(GameRecords record) {
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getClient(context).create(ApiService.class);
         Call<ResponseBody> call = apiService.createGameRecord(record);
 
         call.enqueue(new Callback<ResponseBody>() {

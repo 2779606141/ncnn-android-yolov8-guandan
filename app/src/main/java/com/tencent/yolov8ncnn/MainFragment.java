@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,12 +36,18 @@ public class MainFragment extends Fragment {
             requestOverlayDisplayPermission();
         }
 
-        Button initButton = view.findViewById(R.id.init);
+        Button initButton = view.findViewById(R.id.init );
         initButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initMediaProjectionManager();
             }
+        });
+
+        Switch showHandCardOverlaySwitch = view.findViewById(R.id.showHandCardOverlaySwitch);
+        showHandCardOverlaySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // 更新全局变量
+            AppConfig.getInstance().setShowHandCardOverlay(isChecked);
         });
 
         return view;

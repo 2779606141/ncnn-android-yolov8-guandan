@@ -66,6 +66,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     private Handler autoStartHandler = new Handler();
     private Runnable autoStartRunnable;
     private boolean hasBegin = false;
+    private boolean showHandCardOverlay=true;
 
 
     // 类成员变量
@@ -211,6 +212,21 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             }
         });
 
+        // 查找返回按钮
+        Button backToMainButton = floatView.findViewById(R.id.backToMainButton);
+        backToMainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 创建一个 Intent 来启动 MainActivity
+                Intent intent = new Intent(FloatingWindowService.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+                // 停止悬浮窗服务
+                stopSelf();
+            }
+        });
+
 
     }
     private void calculateLeftPadding() {
@@ -313,15 +329,15 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         savePlayerPositions();
     }
 
-    private void showHandCardOverlay() {
+    private void createHandCardOverlay() {
         List<int[]> initialCoordinates = getAdjustedPlayerCoordinates(); // 获取初始坐标数据
-        for (int i = 0; i < initialCoordinates.size();  i++) {
+        for (int i = 0; i < initialCoordinates.size(); i++) {
             int[] rect = initialCoordinates.get(i);
             HandCardOverlayView view = new HandCardOverlayView(this, i, "Player " + (i));
 
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                    rect[2] - rect[0]+30,
-                    rect[3] - rect[1]+60,
+                    rect[2] - rect[0] + 30,
+                    rect[3] - rect[1] + 60,
                     getWindowType(),
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -329,12 +345,37 @@ public class FloatingWindowService extends Service implements CardUpdateListener
 
             params.x = rect[0];
             params.y = rect[1];
-            params.gravity  = Gravity.START | Gravity.TOP;
+            params.gravity = Gravity.START | Gravity.TOP;
 
-            windowManager.addView(view,  params);
+            windowManager.addView(view, params);
             overlayViews.add(view);
+            // 初始设置为隐藏
+            view.setVisibility(View.GONE);
         }
     }
+    private void showHandCardOverlay() {
+        if (windowManager == null || overlayViews == null) {
+            return;
+        }
+
+        for (HandCardOverlayView view : overlayViews) {
+            try {
+                // 在主线程执行显示操作
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    try {
+                        if (view.isAttachedToWindow()) {
+                            view.setVisibility(View.VISIBLE);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        Log.w("OverlayService", "视图已移除或状态异常: " + view, e);
+                    }
+                });
+            } catch (Exception e) {
+                Log.e("OverlayService", "显示视图时出错: " + e.getMessage(), e);
+            }
+        }
+    }
+
 
     private int getWindowType() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
@@ -428,6 +469,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         // 从Intent中获取启动屏幕录制的结果码和数据
         int mResultCode = intent.getIntExtra("code", -1);
         Intent mResultData = intent.getParcelableExtra("data");
+        showHandCardOverlay = AppConfig.getInstance().isShowHandCardOverlay();
 
         // 获取MediaProjectionManager服务
         mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
@@ -489,7 +531,10 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             startButton.setEnabled(true);
             startButton.setText("开始");
             calculateLeftPadding();
-            showHandCardOverlay();
+            createHandCardOverlay();
+            if (showHandCardOverlay) {
+                showHandCardOverlay();
+            }
             createImageReader();
             virtualDisplay();
             setupAutoStartDetection();
@@ -553,12 +598,12 @@ public class FloatingWindowService extends Service implements CardUpdateListener
         Arrays.fill(cardCounts, 8);
         cardCounts[14] = 2;
         cardCounts[15] = 2;
-        gameRecorder = new GameRecorder();
+        gameRecorder = new GameRecorder(this);
         players = new Player[]{
-                new Player(player0, "Player 0"),
-                new Player(player1, "Player 1"),
-                new Player(player2, "Player 2"),
-                new Player(player3, "Player 3")
+                new Player(player0, 0),
+                new Player(player1, 1),
+                new Player(player2, 2),
+                new Player(player3, 3)
         };
         for (Player player : players) {
             player.setCardUpdateListener(this);  // 设置Service为监听器
@@ -666,7 +711,6 @@ public class FloatingWindowService extends Service implements CardUpdateListener
             gameRecorder.setPlayerFinished(actualPlayerId);
             Log.d("end", Integer.toString(actualPlayerId));
             if(gameRecorder.isGameEnded()){
-                gameRecorder.saveGameRecord();
                 hasBegin=true;
                 Button startButton = floatView.findViewById(R.id.startButton);
                 startButton.post(startButton::performClick);
@@ -727,16 +771,20 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     private void checkHandCards() {
         executor.execute(() -> {
             Image image = mImageReader.acquireLatestImage();
+            if (image == null) {
+                Log.e(TAG, "获取 Image 对象失败，可能是屏幕截图未准备好。");
+                return;
+            }
             Bitmap bitmap = ImageUtils.imageToBitmap(image);
             if(hasBegin){
                 for (Player player : players) {
                     if (player.count > 0) {
-                        gameRecorder.updateRemainingCards(Integer.parseInt(player.name),player.processFinalCards(bitmap, yolov8ncnn, this));
-                        Log.d("remain:",player.name+player.processFinalCards(bitmap, yolov8ncnn, this));
+                        gameRecorder.updateRemainingCards(player.id,player.processFinalCards(bitmap, yolov8ncnn, this));
+                        Log.d("remain:",player.id+player.processFinalCards(bitmap, yolov8ncnn, this));
                         runOnUiThread(() -> {
-                            Toast.makeText(context, "玩家 " + player.name + " 剩余牌处理完成", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "玩家 " + player.id + " 剩余牌处理完成", Toast.LENGTH_SHORT).show();
                         });
-                        gameRecorder.setPlayerFinished(Integer.parseInt(player.name));
+                        gameRecorder.setPlayerFinished(player.id);
                     }
                 }
             }
@@ -785,14 +833,16 @@ public class FloatingWindowService extends Service implements CardUpdateListener
     // 在服务销毁时释放所有资源
     @Override
     public void onDestroy() {
-        for (Player player : players) {
-            player.setCardUpdateListener(null);
-        }
-        super.onDestroy();
+
+        stopScreenShot();
+        // 移除自动检测任务
+        autoStartHandler.removeCallbacksAndMessages(null);
+
         releaseResources();
         if (floatView != null && windowManager != null) {
             windowManager.removeView(floatView);
         }
+        super.onDestroy();
     }
 
     private void releaseResources() {
