@@ -18,17 +18,17 @@
     "{LIST_OF_TARGETS_TO_BUILD}"
   ],
   "libraries": {
-    "yolov8ncnn-Debug-arm64-v8a": {
+    "yolo11ncnn-Debug-arm64-v8a": {
       "buildCommandComponents": [
         "C:\\Users\\yyx\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe",
         "-C",
         "E:\\bishe\\ncnn-android-yolov8 - new - new\\app\\.cxx\\Debug\\5m3n6u50\\arm64-v8a",
-        "yolov8ncnn"
+        "yolo11ncnn"
       ],
       "buildType": "debug",
       "abi": "arm64-v8a",
-      "artifactName": "yolov8ncnn",
-      "output": "E:\\bishe\\ncnn-android-yolov8 - new - new\\app\\build\\intermediates\\cxx\\Debug\\5m3n6u50\\obj\\arm64-v8a\\libyolov8ncnn.so",
+      "artifactName": "yolo11ncnn",
+      "output": "E:\\bishe\\ncnn-android-yolov8 - new - new\\app\\build\\intermediates\\cxx\\Debug\\5m3n6u50\\obj\\arm64-v8a\\libyolo11ncnn.so",
       "runtimeFiles": []
     }
   },

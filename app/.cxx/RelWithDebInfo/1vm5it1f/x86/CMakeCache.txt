@@ -150,7 +150,7 @@ CMAKE_OBJCOPY:FILEPATH=CMAKE_OBJCOPY-NOTFOUND
 CMAKE_OBJDUMP:FILEPATH=CMAKE_OBJDUMP-NOTFOUND
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=yolov8ncnn
+CMAKE_PROJECT_NAME:STATIC=yolo8ncnn
 
 //Ranlib
 CMAKE_RANLIB:FILEPATH=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/bin/llvm-ranlib.exe
@@ -227,6 +227,24 @@ OpenMP_C_LIB_NAMES:STRING=omp
 
 //Path to the omp library for OpenMP
 OpenMP_omp_LIBRARY:FILEPATH=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/i386/libomp.so
+
+//Value Computed by CMake
+yolo11ncnn_BINARY_DIR:STATIC=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/RelWithDebInfo/1vm5it1f/x86
+
+//Dependencies for the target
+yolo11ncnn_LIB_DEPENDS:STATIC=general;ncnn;general;opencv_core;general;opencv_imgproc;general;camera2ndk;general;mediandk;
+
+//Value Computed by CMake
+yolo11ncnn_SOURCE_DIR:STATIC=E:/bishe/ncnn-android-yolov8 - new - new/app/src/main/jni
+
+//Value Computed by CMake
+yolo8ncnn_BINARY_DIR:STATIC=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/RelWithDebInfo/1vm5it1f/x86
+
+//Dependencies for the target
+yolo8ncnn_LIB_DEPENDS:STATIC=general;ncnn;general;opencv_core;general;opencv_imgproc;general;camera2ndk;general;mediandk;
+
+//Value Computed by CMake
+yolo8ncnn_SOURCE_DIR:STATIC=E:/bishe/ncnn-android-yolov8 - new - new/app/src/main/jni
 
 //Value Computed by CMake
 yolov8ncnn_BINARY_DIR:STATIC=E:/bishe/ncnn-android-yolov8 - new - new/app/.cxx/RelWithDebInfo/1vm5it1f/x86
@@ -374,13 +392,13 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding OpenCV
-FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[E:/bishe/ncnn-android-yolov8 - new - new/app/src/main/jni/opencv-mobile-4.5.4-android][cfound components:  core imgproc ][v4.5.4()]
+FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[E:/bishe/ncnn-android-yolov8 - new - new/app/src/main/jni/opencv-mobile-4.11.0-android][cfound components:  core imgproc ][v4.11.0()]
 //Details about finding OpenMP
 FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[TRUE][TRUE][c ][v()]
 //Details about finding OpenMP_C
-FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_C:INTERNAL=[-fopenmp=libomp][C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/i386/libomp.so][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_C:INTERNAL=[-fopenmp=libomp][C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/i386/libomp.so][C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/i386/libomp.so][v()]
 //Details about finding OpenMP_CXX
-FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX:INTERNAL=[-fopenmp=libomp][C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/i386/libomp.so][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX:INTERNAL=[-fopenmp=libomp][C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/i386/libomp.so][C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/lib/clang/19/lib/linux/i386/libomp.so][v()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //Result of TRY_COMPILE

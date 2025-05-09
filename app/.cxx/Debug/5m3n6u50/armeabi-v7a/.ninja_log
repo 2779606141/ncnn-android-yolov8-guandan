@@ -11,3 +11,14 @@
 1790	2841	760079416	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/armeabi-v7a/libyolov8ncnn.so	511dcd2bf0576755
 11	1770	760982457	CMakeFiles/yolov8ncnn.dir/yolov8ncnn.cpp.o	553fa225fb37fa1b
 1771	2169	760982458	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/armeabi-v7a/libyolov8ncnn.so	511dcd2bf0576755
+4	678	768378885	build.ninja	737c4fedd2633fe4
+0	205	0	clean	21707775c07c6747
+0	213	0	clean	21707775c07c6747
+12	472	768457768	build.ninja	737c4fedd2633fe4
+1	12	0	clean	21707775c07c6747
+0	10	0	clean	21707775c07c6747
+2	380	768457853	build.ninja	737c4fedd2633fe4
+1	1522	768457854	CMakeFiles/yolo11ncnn.dir/ndkcamera.cpp.o	78495c7ff14606c7
+1523	1905	768457855	E:/bishe/ncnn-android-yolov8 - new - new/app/build/intermediates/cxx/Debug/5m3n6u50/obj/armeabi-v7a/libyolo11ncnn.so	457286864da175a9
+3	394	768457976	build.ninja	737c4fedd2633fe4
+0	11	0	clean	21707775c07c6747

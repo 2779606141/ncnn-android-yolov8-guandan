@@ -220,6 +220,7 @@ public class FloatingWindowService extends Service implements CardUpdateListener
                 // 创建一个 Intent 来启动 MainActivity
                 Intent intent = new Intent(FloatingWindowService.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("FROM_FLOATING_WINDOW", true);
                 startActivity(intent);
 
                 // 停止悬浮窗服务

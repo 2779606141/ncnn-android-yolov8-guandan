@@ -6,7 +6,7 @@
 # It is included in the main 'build.ninja'.
 
 # =============================================================================
-# Project: yolov8ncnn
+# Project: yolo8ncnn
 # Configuration: RelWithDebInfo
 # =============================================================================
 # =============================================================================
@@ -14,7 +14,7 @@
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__yolov8ncnn
+rule CXX_COMPILER__yolo8ncnn
   depfile = $DEP_FILE
   deps = gcc
   command = C:\Users\yyx\AppData\Local\Android\Sdk\ndk\28.0.12433566\toolchains\llvm\prebuilt\windows-x86_64\bin\clang++.exe --target=i686-none-linux-android24 --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -24,7 +24,7 @@ rule CXX_COMPILER__yolov8ncnn
 #############################################
 # Rule for linking CXX shared library.
 
-rule CXX_SHARED_LIBRARY_LINKER__yolov8ncnn
+rule CXX_SHARED_LIBRARY_LINKER__yolo8ncnn
   command = cmd.exe /C "$PRE_LINK && C:\Users\yyx\AppData\Local\Android\Sdk\ndk\28.0.12433566\toolchains\llvm\prebuilt\windows-x86_64\bin\clang++.exe --target=i686-none-linux-android24 --sysroot=C:/Users/yyx/AppData/Local/Android/Sdk/ndk/28.0.12433566/toolchains/llvm/prebuilt/windows-x86_64/sysroot -fPIC $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS -shared $SONAME_FLAG$SONAME -o $TARGET_FILE $in $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking CXX shared library $TARGET_FILE
   restat = $RESTAT

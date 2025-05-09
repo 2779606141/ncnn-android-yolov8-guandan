@@ -10,16 +10,18 @@
         android:id="@+id/showHandCardOverlaySwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="显示手牌覆盖层"
+        android:layout_marginTop="128dp"
+        android:text="显示识别区域"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/init" />
+
+
     <Button
         android:id="@+id/init"
         android:layout_width="237dp"
         android:layout_height="69dp"
-        android:layout_marginTop="324dp"
+        android:layout_marginTop="236dp"
         android:text="start"
         android:textColor="@android:color/white"
         android:textSize="25sp"
